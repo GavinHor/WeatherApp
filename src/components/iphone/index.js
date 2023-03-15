@@ -64,7 +64,7 @@ export default class Iphone extends Component {
 					<tr class={style.tr}>
 						<td>Today</td>
 						<td>4 - 18</td>
-						<td>cloudy</td>
+						<td>sunny</td>
 					</tr>
 					<tr class={style.tr}>
 						<td>Today</td>
