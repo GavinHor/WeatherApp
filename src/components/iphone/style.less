@@ -4,28 +4,28 @@
 	display: flex;
 	flex-direction: column;
 	background: #2561A0;
+	overflow: auto;
 	color: #fff;
-	width: 414px;
-	height: 736px;
+	width: 414px; //414px
+	height: 100%; //736px
 	text-align: center;
-	padding-top: 30px;
-	padding-bottom: 30px;
+	padding-top: 1em;
 	margin: 0 auto;
+	user-select: none;
+}
+
+.container::-webkit-scrollbar {
+	display: none;
 }
 
 .header {
 	display: flex;
 	flex-direction: column;
-	flex: 1;
 	background: rgba(255, 255, 255, 0.25);
 	border-radius: 0.5em;
 	margin-left: 1em;
 	margin-right: 1em;
-	transition: all 0.3s;
-}
-
-.header:hover{
-	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+	transition: all 0.5s;
 }
 
 .tr {
@@ -46,28 +46,28 @@
 }
 
 .city {
-	flex: 1;
 	font-size: 1.7em;
-	font-weight: 500;
+	font-weight: 700;
+	margin-top: 0.5em;
 }
 
 .conditions {
-	flex: 1;
 	font-size: 1em;
+	font-weight: lighter;
 }
 
 .temperature {
 	flex: 2;
-	font-size: 4.8em;
+	font-size: 3em;
 	font-weight: 200;
 	margin-top: 0;
 	letter-spacing: 0px;
 }
 
-.maxMinTemperature{
+.maxMinTemperature {
 	border-collapse: collapse;
 	width: 10em;
-    align-self: center;
+	margin: auto;
 }
 
 .filled:after {
@@ -78,4 +78,41 @@
 	display: inline-block;
 	padding-top: 10px;
 	vertical-align: top;
+}
+
+.footer {
+	position: fixed;
+	width: 414px;
+	bottom: 0%;
+	padding: 1em;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-around;
+	border-top: 1px solid white;
+	background: #2561A0;
+}
+
+.hourlyForcastContainer {
+	overflow-x: auto;
+	transition: 0.3s;
+	width: 20em;
+	margin: auto;
+}
+
+.hourlyForcastContainer:hover {
+	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+}
+
+.hourlyForcastContainer::-webkit-scrollbar {
+	display: none;
+}
+
+.hourlyForcast {
+	border-collapse: collapse;
+}
+
+.hourlyForcast>tr>td {
+	padding: 0.25em 2em 0.25em 2em;
+	text-align: center;
 }

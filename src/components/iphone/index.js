@@ -7,6 +7,9 @@ import style_iphone from '../button/style_iphone';
 import $ from 'jquery';
 // import the Button component
 import Button from '../button';
+import SettingsButton from '../SettingsButton';
+import HourlyForcast from '../hourlyForcast';
+import WeeklyForcast from '../weeklyForcast';
 
 export default class Iphone extends Component {
 	//var Iphone = React.createClass({
@@ -17,7 +20,9 @@ export default class Iphone extends Component {
 		// temperature state
 		this.state.temp = "";
 		// button display state
-		this.setState({ display: true });
+		this.setState({
+			display: true,
+		});
 	}
 
 	// the main render method for the iphone component
@@ -39,61 +44,23 @@ export default class Iphone extends Component {
 						</tr>
 					</table>
 					<hr class={style.hr}></hr>
+					<HourlyForcast />
 				</header>
-				<table class={style.details}>
-					<tr class={style.tr}>
-						<td>Today</td>
-						<td>4 - 18</td>
-						<td>cloudy</td>
-					</tr>
-					<tr class={style.tr}>
-						<td>Today</td>
-						<td>4 - 18</td>
-						<td>cloudy</td>
-					</tr>
-					<tr class={style.tr}>
-						<td>Today</td>
-						<td>4 - 18</td>
-						<td>cloudy</td>
-					</tr>
-					<tr class={style.tr}>
-						<td>Today</td>
-						<td>4 - 18</td>
-						<td>cloudy</td>
-					</tr>
-					<tr class={style.tr}>
-						<td>Today</td>
-						<td>4 - 18</td>
-						<td>sunny</td>
-					</tr>
-					<tr class={style.tr}>
-						<td>Today</td>
-						<td>4 - 18</td>
-						<td>cloudy</td>
-					</tr>
-				</table>
+				<section>
+					<WeeklyForcast />
+				</section>
+				<footer class={style.footer}>
+					<div>button</div>
+					<div>button</div>
+					<div>
+						<SettingsButton clickFunction={this.test} />
+					</div>
+				</footer>
 				<div class={style_iphone.container}>
-					{this.state.display ? <Button class={style_iphone.button} clickFunction={this.fetchWeatherData}/> : null}
+					{this.state.display ? <Button class={style_iphone.button} clickFunction={this.fetchWeatherData} /> : null}
 				</div>
 			</body>
 		);
-	}
-
-	parseResponse = (parsed_json) => {
-		var location = parsed_json['name'];
-		var temp_c = parsed_json['main']['temp'];
-		var highestTemp_c = parsed_json['main']['temp_max'];
-		var lowestTemp_c = parsed_json['main']['temp_min'];
-		var conditions = parsed_json['weather']['0']['description'];
-		console.log(parsed_json)
-		// set states for fields so they could be rendered later on
-		this.setState({
-			locate: location,
-			temp: temp_c,
-			cond: conditions,
-			highestTemp: 'H:' + highestTemp_c,
-			lowestTemp: 'L:' + lowestTemp_c
-		});
 	}
 
 	// a call to fetch weather data via wunderground
@@ -109,4 +76,26 @@ export default class Iphone extends Component {
 		// once the data grabbed, hide the button
 		this.setState({ display: false });
 	}
+
+	test = () => {
+		console.log("testing123")
+		this.setState({ button: false });
+	}
+
+	parseResponse = (parsed_json) => {
+		var location = parsed_json['name'];
+		var temp_c = parsed_json['main']['temp'];
+		var highestTemp_c = parsed_json['main']['temp_max'];
+		var lowestTemp_c = parsed_json['main']['temp_min'];
+		var conditions = parsed_json['weather']['0']['description'];
+		// set states for fields so they could be rendered later on
+		this.setState({
+			locate: location,
+			temp: temp_c,
+			cond: conditions,
+			highestTemp: 'H:' + highestTemp_c,
+			lowestTemp: 'L:' + lowestTemp_c
+		});
+	}
+
 }
