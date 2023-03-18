@@ -34,6 +34,23 @@ export default class Iphone extends Component {
 		this.setState({ display: false });
 	}
 
+	descriptionIcons = new Map([
+		['', '../assets/icons/CloudsLine-removebg-preview.png'],
+		['', '../assets/icons/CloudsMoon-removebg-preview.png'],
+		['', '../assets/icons/Cloudy-removebg-preview.png'],
+		['', '../assets/icons/ExtremeCold-removebg-preview.png'],
+		['', '../assets/icons/ExtremeHeat-removebg-preview.png'],
+		['', '../assets/icons/Ice-removebg-preview.png'],
+		['', '../assets/icons/Lightning-removebg-preview.png'],
+		['', '../assets/icons/MoreCloudy-removebg-preview.png'],
+		['', '../assets/icons/MoreRain-removebg-preview.png'],
+		['', '../assets/icons/Rain-removebg-preview.png'],
+		['', '../assets/icons/Snow-removebg-preview.png'],
+		['', '../assets/icons/SunCloudy-removebg-preview.png'],
+		['', '../assets/icons/Sunny-removebg-preview (1).png'],
+		['', '../assets/icons/ThunderStorm-removebg-preview.png']
+	]);
+
 	// the main render method for the iphone component
 	render() {
 		// check if temperature data is fetched, if so add the sign styling to the page
@@ -45,6 +62,7 @@ export default class Iphone extends Component {
 				<div class={ style.header }>
 					<div class={ style.city }>{ this.state.locate }</div>
 					<div class={ style.conditions }>{ this.state.cond }</div>
+					<div class={ style.img }><img src={ this.state.icon }/></div>
 					<span class={ tempStyles }>{ this.state.temp }</span>
 				</div>
 				<div class={ style.details }></div>
@@ -59,12 +77,14 @@ export default class Iphone extends Component {
 		var location = parsed_json['name'];
 		var temp_c = parsed_json['main']['temp'];
 		var conditions = parsed_json['weather']['0']['description'];
+		var icon = descriptionIcons.get(conditions);
 
 		// set states for fields so they could be rendered later on
 		this.setState({
 			locate: location,
 			temp: temp_c,
-			cond : conditions
+			cond: conditions,
+			icon: icon
 		});      
 	}
 }

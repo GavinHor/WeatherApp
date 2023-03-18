@@ -60,19 +60,6 @@ export default class Iphone extends Component {
 		var location = parsed_json['name'];
 		var temp_c = parsed_json['main']['temp'];
 		var conditions = parsed_json['weather']['0']['description'];
-		var advancedInformation = [
-			parsed_json['main']['0']['pressure'],
-			parsed_json['main']['0']['humidity'],
-			parsed_json['visibility']['0'],
-			parsed_json['wind']['0']['speed'],
-			parsed_json['wind']['0']['deg'],
-			parsed_json['wind']['0']['gust'],
-			parsed_json['clouds']['0']['all'],
-			parsed_json['dt']['0'],
-			parsed_json['sys']['0']['type'],
-			parsed_json['sys']['0']['sunrise'],
-			parsed_json['sys']['0']['sunset']
-		];
 
 		var advancedInformationMap = new Map([
 			['Temperature', parsed_json['main']['temp']],
@@ -83,8 +70,6 @@ export default class Iphone extends Component {
 			['Wind Direction', parsed_json['wind']['0']['deg']],
 			['Wind Gust', parsed_json['wind']['0']['gust']],
 			['Clouds', parsed_json['clouds']['0']['all']],
-			['', parsed_json['dt']['0']],
-			['', parsed_json['sys']['0']['type']],
 			['Sunrise Time', parsed_json['sys']['0']['sunrise']],
 			['Sunset Time', parsed_json['sys']['0']['sunset']]
 		]);
@@ -92,9 +77,6 @@ export default class Iphone extends Component {
 		convertToDateTime = (unixTimestamp) => {
 			datetime = new Date(unixTimestamp * 1000).toLocaleString();
 		}
-
-		advancedInformation[-1] = convertToDateTime(advancedInformation[-1]);
-		advancedInformation[-2] = convertToDateTime(advancedInformation[-2]);
 
 		// set states for fields so they could be rendered later on
 		this.setState({
@@ -115,8 +97,8 @@ export default class Iphone extends Component {
 			);
 		};
 
-		advancedInformation[-1] = convertToDateTime(advancedInformationMap.get('Sunset Time'));
-		advancedInformation[-2] = convertToDateTime(advancedInformationMap.get('Sunrise Time'));
+		advancedInformation.set(advancedInformation.get('Sunset Time'), convertToDateTime(advancedInformationMap.get('Sunset Time')));
+		advancedInformation.set(advancedInformation.get('Sunrise Time'), convertToDateTime(advancedInformationMap.get('Sunrise Time')));
 
 		render(){
 			return(
