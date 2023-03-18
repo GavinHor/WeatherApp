@@ -18,22 +18,22 @@ export default class WeeklyForcast extends Component {
                 <tr class={style.tr}>
                     <td>Today</td>
                     <td>4 - 18</td>
-                    <td>cloudy</td>
+                    <td><img class = {style.icons}src='../../assets/icons/Cloudy-removebg-preview.png'></img></td>
                 </tr>
                 <tr class={style.tr}>
                     <td>Today</td>
                     <td>4 - 18</td>
-                    <td>cloudy</td>
+                    <td><img class = {style.icons}src='../../assets/icons/Cloudy-removebg-preview.png'></img></td>
                 </tr>
                 <tr class={style.tr}>
                     <td>Today</td>
                     <td>4 - 18</td>
-                    <td>cloud</td>
+                    <td><img class = {style.icons}src='../../assets/icons/Cloudy-removebg-preview.png'></img></td>
                 </tr>
                 <tr class={style.tr}>
                     <td>Today</td>
                     <td>4 - 18</td>
-                    <td>cloudy</td>
+                    <td><img class = {style.icons}src='../../assets/icons/Cloudy-removebg-preview.png'></img></td>
                 </tr>
                 <tr class={style.tr}>
                     <td>Today</td>
@@ -43,7 +43,7 @@ export default class WeeklyForcast extends Component {
                 <tr class={style.tr}>
                     <td>Today</td>
                     <td>4 - 18</td>
-                    <td>cloudy</td>
+                    <td><img class = {style.icons}src='../../assets/icons/Cloudy-removebg-preview.png'></img></td>
                 </tr>
             </table>
         );

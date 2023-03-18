@@ -22,20 +22,20 @@ export default class Iphone extends Component {
 		// button display state
 		this.setState({
 			display: true,
+			displayHourly: true,
+			displayWeekly: true,
+			current_parsed_json: "placeholder"
 		});
 	}
 
 	// the main render method for the iphone component
 	render() {
-		// check if temperature data is fetched, if so add the sign styling to the page
-		const tempStyles = this.state.temp ? `${style.temperature} ${style.filled}` : style.temperature;
-
 		// display all weather data
 		return (
 			<body class={style.container}>
 				<header class={style.header}>
 					<div class={style.city}>{this.state.locate}</div>
-					<span class={tempStyles}>{this.state.temp}</span>
+					<span class={style.temperature}>{this.state.temp}</span>
 					<div class={style.conditions}>{this.state.cond}</div>
 					<table class={style.maxMinTemperature}>
 						<tr>
@@ -44,10 +44,10 @@ export default class Iphone extends Component {
 						</tr>
 					</table>
 					<hr class={style.hr}></hr>
-					<HourlyForcast />
+					{this.state.displayHourly ? <HourlyForcast hourly={this.state.hourly7DayForcast}/> : null}
 				</header>
 				<section>
-					<WeeklyForcast />
+					{this.state.displayWeekly ? <WeeklyForcast /> : null}
 				</section>
 				<footer class={style.footer}>
 					<div>button</div>
@@ -63,26 +63,27 @@ export default class Iphone extends Component {
 		);
 	}
 
-	// a call to fetch weather data via wunderground
 	fetchWeatherData = () => {
-		// API URL with a structure of : ttp://api.wunderground.com/api/key/feature/q/country-code/city.json
-		var url = "http://api.openweathermap.org/data/2.5/weather?q=London&units=metric&APPID=55c7ce0930b022b960dec0062ba360b6";
 		$.ajax({
-			url: url,
-			dataType: "jsonp",
-			success: this.parseResponse,
+			url: "http://api.openweathermap.org/data/2.5/weather?q=London&units=metric&APPID=55c7ce0930b022b960dec0062ba360b6",
+			dataType: "json",
+			success: this.parseResponseOpenWeather,
 			error: function (req, err) { console.log('API call failed ' + err); }
 		})
+
+		$.ajax({
+			url: "https://api.open-meteo.com/v1/forecast?latitude=51.51&longitude=-0.13&hourly=temperature_2m&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timeformat=unixtime&timezone=auto",
+			dataType: "json",
+			success: this.parseResponseMeteoWeather,
+			error: function (req, err) { console.log('API call failed ' + err); }
+		})
+
+
 		// once the data grabbed, hide the button
 		this.setState({ display: false });
 	}
 
-	test = () => {
-		console.log("testing123")
-		this.setState({ button: false });
-	}
-
-	parseResponse = (parsed_json) => {
+	parseResponseOpenWeather = (parsed_json) => {
 		var location = parsed_json['name'];
 		var temp_c = parsed_json['main']['temp'];
 		var highestTemp_c = parsed_json['main']['temp_max'];
@@ -90,12 +91,27 @@ export default class Iphone extends Component {
 		var conditions = parsed_json['weather']['0']['description'];
 		// set states for fields so they could be rendered later on
 		this.setState({
+			current_parsed_json: parsed_json,
 			locate: location,
-			temp: temp_c,
+			temp: temp_c + "°",
 			cond: conditions,
 			highestTemp: 'H:' + highestTemp_c,
 			lowestTemp: 'L:' + lowestTemp_c
 		});
+		console.log(parsed_json)
 	}
+	
+	//7 day forcast split into 2 categories
+	//1 for the overall day 
+	//1 for each hour of the day
+	parseResponseMeteoWeather = (parsed_json) => {
+		var dailyForcast = parsed_json['hourly']
+		var weeklyForcast = parsed_json['daily']
 
+		this.setState({
+			hourly7DayForcast: dailyForcast,
+			daily7DayForcast: weeklyForcast
+		})
+		console.log(parsed_json)
+	}
 }
