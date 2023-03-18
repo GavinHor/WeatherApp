@@ -6,59 +6,80 @@ export default class HourlyForcast extends Component {
 
 	constructor() {
 		super();
+
 		this.state = {
-			value: 10,
+			hourlyTimes: [],
+			hourlyTemps: [],
+			currentTime: new Date().getHours()
 		};
 	}
 
 	// rendering a function when the button is clicked
 	render() {
+		let timeNow = this.state.currentTime;
+		let hourTimes = this.state.hourlyTimes;
+		let hourTemps = this.state.hourlyTemps;
+
+		let hours = hourTimes.slice(timeNow, timeNow + 24).map((hour, i) =>
+		<td key={i} class={style.hourlyForcast_td}>{new Date(hour * 1000).getHours()}:00</td>
+		);
+
+		let temps = hourTemps.slice(timeNow, timeNow + 25).map((temp, i) =>
+		<td key={i} class={style.hourlyForcast_td}>{temp}°</td>
+		);
+
 		return (
 			<div class={style.hourlyForcastContainer}>
 				<button onclick={this.clicked}>GetHourly</button>
 				<table class={style.hourlyForcast} id="Hourly"></table>
+				<tr>
+					<td>Now</td>
+					{hours}
+				</tr>
+				<tr>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+					<td class={style.hourlyForcast_td}>Images</td>
+				</tr>
+				<tr>
+					{temps}
+				</tr>
 			</div>
 		);
 	}
 
 	clicked = () => {
-		//initialising variables
-		let hourly = this.props.hourly;
-
-		let currentHour = new Date();
-		currentHour = currentHour.getHours();
-		let hourHTML = "<td class='hourlyForcast_td'>Now</td>"
-
-		let imageHTML = "<tr><td class='hourlyForcast_td'>image</td>"
-		console.log(hourly['time']);
-
-		let temperatureHTML = "<tr><td class='hourlyForcast_td'>" + hourly['temperature_2m'][currentHour]
-
-
-
-		//Inputs time along with the corrosponding images and temperatures from Meteo API
-		//+1 to skip current hour as variable is initialised with the first hour 
-		for (let i = currentHour + 1; i < 24 + currentHour; i++) {
-
-			//*1000 since java uses milliseconds internally while Unix time stamps use seconds
-			let hour = new Date(                 hourly['time'][i] * 1000)
-			hour = hour.getHours();
-
-			hourHTML += "<td class='hourlyForcast_td'>" + hour + ":00</td>"
-			imageHTML += "<td class='hourlyForcast_td'>Image</td>"
-			temperatureHTML += "<td class='hourlyForcast_td'>" + hourly['temperature_2m'][i] + "°"
-		}
-
-		hourHTML += "</tr>"
-		temperatureHTML += "</tr>"
-		imageHTML += "</tr>"
-
-		document.getElementById("Hourly").innerHTML = hourHTML + imageHTML + temperatureHTML;
-		let css = document.querySelectorAll('.hourlyForcast_td');
-		console.log(css)
-		for (let i = 0; i < css.length; i++){
-			css[i].style.padding = "0.25em 2em 0.25em 2em";
-		}
+		let hourlyForcast = this.props.hourly;
+		let times = hourlyForcast['time'];
+		let temps = hourlyForcast['temperature_2m'];
+		this.setState({
+			hourlyTimes: times,
+			hourlyTemps: temps,
+			currentTime: new Date().getHours()
+		});
+		console.log(this.state.hourlyTemps)
 	}
 }
 
