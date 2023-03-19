@@ -12,14 +12,30 @@ export default class WeeklyForcast extends Component {
         };
     }
 
+    componentDidUpdate(prevProps, prevState){
+        if (prevProps.daily !== this.props.daily)
+        {
+            let daily = this.props.daily;
+            let dailyMax = daily['temperature_2m_max'];
+            let dailyMin = daily['temperature_2m_min'];
+            let dailyTimeDay = daily['time'];
+    
+            this.setState({
+                dailyTempMax: dailyMax,
+                dailyTempMin: dailyMin,
+                dailyTime: dailyTimeDay
+            });
+        }
+    }
+
     // rendering a function when the button is clicked
     render() {
         let dailyMax = this.state.dailyTempMax
         let dailyMin = this.state.dailyTempMin
         let dailyTimeDay = this.state.dailyTime
+
         return (
             <table class={style.details}>
-                <button onclick={this.clicked}>GetDaily</button>
                 {dailyMax.map((dailyMax, i) => (
                 <tr class={style.weekly_tr}>
                     <td key={i}>{new Date(dailyTimeDay[i] * 1000).getDate()}</td>
@@ -28,19 +44,6 @@ export default class WeeklyForcast extends Component {
                 </tr>))}
             </table>
         );
-    }
-
-    clicked = () => {
-        let daily = this.props.dailyForcast;
-        let dailyMax = daily['temperature_2m_max'];
-        let dailyMin = daily['temperature_2m_min'];
-        let dailyTimeDay = daily['time'];
-
-        this.setState({
-            dailyTempMax: dailyMax,
-            dailyTempMin: dailyMin,
-            dailyTime: dailyTimeDay
-        });
     }
 }
 
