@@ -41,15 +41,16 @@ export default class Iphone extends Component {
 
 		// display all weather data
 		return (
-			<div class={ style.container }>
-				<div class={ style.header }>
-					<div class={ style.city }>{ this.state.locate }</div>
-					<div class={ style.conditions }>{ this.state.cond }</div>
-					<span class={ tempStyles }>{ this.state.temp }</span>
+			<div class="">
+				<div class={ style.container }>
+
 				</div>
-				<div class={ style.details }></div>
-				<div class= { style_iphone.container }>
-					{ this.state.display ? <Button class={ style_iphone.button } clickFunction={ this.fetchWeatherData }/ > : null }
+
+				<div class="AdvancedInformation">
+					<table></table>
+					<>
+						{addToTable}
+					</>
 				</div>
 			</div>
 		);
@@ -59,21 +60,6 @@ export default class Iphone extends Component {
 		var location = parsed_json['name'];
 		var temp_c = parsed_json['main']['temp'];
 		var conditions = parsed_json['weather']['0']['description'];
-		/*
-		var advancedInformation = [
-			parsed_json['main']['0']['pressure'],
-			parsed_json['main']['0']['humidity'],
-			parsed_json['visibility']['0'],
-			parsed_json['wind']['0']['speed'],
-			parsed_json['wind']['0']['deg'],
-			parsed_json['wind']['0']['gust'],
-			parsed_json['clouds']['0']['all'],
-			parsed_json['dt']['0'],
-			parsed_json['sys']['0']['type'],
-			parsed_json['sys']['0']['sunrise'],
-			parsed_json['sys']['0']['sunset']
-		];
-		*/
 
 		var advancedInformation = new Map([
 			['Temperature', parsed_json['main']['temp']],
@@ -90,7 +76,7 @@ export default class Iphone extends Component {
 
 		convertToDateTime = (unixTimestamp) => {
 			datetime = new Date(unixTimestamp * 1000).toLocaleString();
-		}
+		};
 
 		// set states for fields so they could be rendered later on
 		this.setState({
@@ -104,32 +90,18 @@ export default class Iphone extends Component {
 			windDirection: advancedInformation.get('Wind Direction'),
 			windGust: advancedInformation.get('Wind Gust'),
 			clouds: advancedInformation.get('Clouds'),
-			sunriseTime: advancedInformation.get('Sunrise Time'),
-			sunsetTime: advancedInformation.get('Sunset Time'),
+			sunriseTime: convertToDateTime(advancedInformation.get('Sunrise Time')),
+			sunsetTime: convertToDateTime(advancedInformation.get('Sunset Time')),
 		});
-	}
+	};
 
-	advancedInformation.set(advancedInformation.get('Sunset Time'), convertToDateTime(advancedInformation.get('Sunset Time')));
-	advancedInformation.set(advancedInformation.get('Sunset Time'), convertToDateTime(advancedInformation.get('Sunrise Time')));
-
-	function addToTable(){
+	addToTable(){
 		const dataForTable = document.querySelector('table').innerHTML;
 
 		advancedInformation.forEach((dataPoint, value) => {
-			dataForTable += <tr>;
-			dataForTable += <td>dataPoint<td> + <td>value<td>;
-			dataForTable += <tr>;
+			dataForTable += '<tr>';
+			dataForTable += '<td>'+dataPoint+'</td>' + '<td>'+value+'</td>';
+			dataForTable += '<tr>';
 		});
-	}
-
-	render(){
-		return(
-			<div class="AdvancedInformation">
-				<table></table>
-				<>
-					{addToTable}
-				</>
-			</div>
-		);
 	}
 }
