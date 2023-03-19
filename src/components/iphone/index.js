@@ -22,8 +22,8 @@ export default class Iphone extends Component {
 		// button display state
 		this.setState({
 			display: true,
-			displayHourly: true,
-			displayWeekly: true,
+			displayHourly: false,
+			displayWeekly: false,
 		});
 	}
 
@@ -45,7 +45,7 @@ export default class Iphone extends Component {
 					<hr class={style.hr}></hr>
 					{this.state.displayHourly ? <HourlyForcast hourly={this.state.hourly7DayForcast}/> : null}
 				</header>
-				{this.state.displayWeekly ? <WeeklyForcast dailyForcast={this.state.daily7DayForcast}/> : null}
+				{this.state.displayWeekly ? <WeeklyForcast daily={this.state.daily7DayForcast}/> : null}
 				<footer class={style.footer}>
 					<div>button</div>
 					<div>button</div>
@@ -77,7 +77,11 @@ export default class Iphone extends Component {
 
 
 		// once the data grabbed, hide the button
-		this.setState({ display: false });
+		this.setState({ 
+			display: false,
+			displayHourly: true,
+			displayWeekly: true
+		});
 	}
 
 	parseResponseOpenWeather = (parsed_json) => {

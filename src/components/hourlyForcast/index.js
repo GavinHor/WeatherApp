@@ -14,6 +14,21 @@ export default class HourlyForcast extends Component {
 		};
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.hourly !== this.props.hourly)
+		{
+			let hourlyForcast = this.props.hourly;
+			let times = hourlyForcast['time'];
+			let temps = hourlyForcast['temperature_2m'];
+			this.setState({
+				hourlyTimes: times,
+				hourlyTemps: temps,
+				currentTime: new Date().getHours()
+			});
+			console.log(this.state.hourlyTemps)
+		}
+	}
+
 	// rendering a function when the button is clicked
 	render() {
 		let timeNow = this.state.currentTime;
@@ -30,7 +45,6 @@ export default class HourlyForcast extends Component {
 
 		return (
 			<div class={style.hourlyForcastContainer}>
-				<button onclick={this.clicked}>GetHourly</button>
 				<table class={style.hourlyForcast} id="Hourly"></table>
 				<tr>
 					<td>Now</td>
@@ -68,18 +82,6 @@ export default class HourlyForcast extends Component {
 				</tr>
 			</div>
 		);
-	}
-
-	clicked = () => {
-		let hourlyForcast = this.props.hourly;
-		let times = hourlyForcast['time'];
-		let temps = hourlyForcast['temperature_2m'];
-		this.setState({
-			hourlyTimes: times,
-			hourlyTemps: temps,
-			currentTime: new Date().getHours()
-		});
-		console.log(this.state.hourlyTemps)
 	}
 }
 
