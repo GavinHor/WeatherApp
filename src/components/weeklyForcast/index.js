@@ -38,7 +38,7 @@ export default class WeeklyForcast extends Component {
             <table class={style.details}>
                 {dailyMax.map((dailyMax, i) => (
                 <tr class={style.weekly_tr}>
-                    <td key={i}>{new Date(dailyTimeDay[i] * 1000).getDate()}</td>
+                    <td>{new Date(dailyTimeDay[i] * 1000).getDay()}</td>
                     <td key={i}>{dailyMax} - {dailyMin[i]}</td>
                     <td>test</td>
                 </tr>))}

@@ -7,9 +7,10 @@ import style_iphone from '../button/style_iphone';
 import $ from 'jquery';
 // import the Button component
 import Button from '../button';
-import SettingsButton from '../SettingsButton';
+import SettingsButton from '../settings/settingsButton';
 import HourlyForcast from '../hourlyForcast';
 import WeeklyForcast from '../weeklyForcast';
+import SettingsPage from '../settings/settingsPage';
 
 export default class Iphone extends Component {
 	//var Iphone = React.createClass({
@@ -24,40 +25,68 @@ export default class Iphone extends Component {
 			display: true,
 			displayHourly: false,
 			displayWeekly: false,
+			displaySettingsToggle: false
 		});
 	}
 
 	// the main render method for the iphone component
 	render() {
 		// display all weather data
+
+
 		return (
 			<body class={style.container}>
-				<header class={style.header}>
-					<div class={style.city}>{this.state.locate}</div>
-					<span class={style.temperature}>{this.state.temp}</span>
-					<div class={style.conditions}>{this.state.cond}</div>
-					<table class={style.maxMinTemperature}>
-						<tr>
-							<td> {this.state.highestTemp} </td>
-							<td> {this.state.lowestTemp} </td>
-						</tr>
-					</table>
-					<hr class={style.hr}></hr>
-					{this.state.displayHourly ? <HourlyForcast hourly={this.state.hourly7DayForcast}/> : null}
-				</header>
+				{this.state.displaySettingsToggle ? <SettingsPage onClick={this.handleChildClick}/>: null}
+				{
+					this.state.displayHourly ?
+						<header class={style.header}>
+							<div class={style.city}>{this.state.locate}</div>
+							<span class={style.temperature}>{this.state.temp}</span>
+							<div class={style.conditions}>{this.state.cond}</div>
+							<table class={style.maxMinTemperature}>
+								<tr>
+									<td> {this.state.highestTemp} </td>
+									<td> {this.state.lowestTemp} </td>
+								</tr>
+							</table>
+							<hr class={style.hr}></hr>
+							<HourlyForcast hourly={this.state.hourly7DayForcast} current={this.state.temp}/>
+						</header> : null
+				}
 				{this.state.displayWeekly ? <WeeklyForcast daily={this.state.daily7DayForcast}/> : null}
-				<footer class={style.footer}>
-					<div>button</div>
-					<div>button</div>
-					<div>
-						<SettingsButton clickFunction={this.test} />
-					</div>
-				</footer>
 				<div class={style_iphone.container}>
 					{this.state.display ? <Button class={style_iphone.button} clickFunction={this.fetchWeatherData} /> : null}
 				</div>
+
+				<footer class={style.footer}>
+					<SettingsButton clickFunction={this.displaySettings} />
+				</footer>
 			</body>
 		);
+	}
+
+	displaySettings = () => {
+		console.log(this.state.displaySettingsToggle)
+		if (this.state.displaySettingsToggle == true) {
+			this.setState({
+				displaySettingsToggle: false,
+				displayHourly: true,
+				displayWeekly: true
+			});
+			this.fetchWeatherData();
+
+		} else {
+			this.setState({
+				displaySettingsToggle: true,
+				displayHourly: false,
+				displayWeekly: false
+			});
+			console.log("displaying settings")
+		}
+	}
+
+	handleChildClick = () => {
+		console.log('Child clicked!');
 	}
 
 	fetchWeatherData = () => {
@@ -77,7 +106,7 @@ export default class Iphone extends Component {
 
 
 		// once the data grabbed, hide the button
-		this.setState({ 
+		this.setState({
 			display: false,
 			displayHourly: true,
 			displayWeekly: true
@@ -100,7 +129,7 @@ export default class Iphone extends Component {
 		});
 		console.log(parsed_json)
 	}
-	
+
 	//7 day forcast split into 2 categories
 	//1 for the overall day 
 	//1 for each hour of the day

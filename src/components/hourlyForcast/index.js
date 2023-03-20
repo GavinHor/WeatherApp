@@ -23,7 +23,8 @@ export default class HourlyForcast extends Component {
 			this.setState({
 				hourlyTimes: times,
 				hourlyTemps: temps,
-				currentTime: new Date().getHours()
+				//+1 since getHours gives us 
+				currentTime: new Date().getHours() + 1
 			});
 			console.log(this.state.hourlyTemps)
 		}
@@ -39,9 +40,11 @@ export default class HourlyForcast extends Component {
 		<td key={i} class={style.hourlyForcast_td}>{new Date(hour * 1000).getHours()}:00</td>
 		);
 
-		let temps = hourTemps.slice(timeNow, timeNow + 25).map((temp, i) =>
+		let temps = hourTemps.slice(timeNow, timeNow + 24).map((temp, i) =>
 		<td key={i} class={style.hourlyForcast_td}>{temp}°</td>
 		);
+
+		let currentTemp = this.props.current
 
 		return (
 			<div class={style.hourlyForcastContainer}>
@@ -78,6 +81,7 @@ export default class HourlyForcast extends Component {
 					<td class={style.hourlyForcast_td}>Images</td>
 				</tr>
 				<tr>
+					<td>{currentTemp}</td>
 					{temps}
 				</tr>
 			</div>

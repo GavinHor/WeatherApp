@@ -1,8 +1,8 @@
 // import preact
 import { h, render, Component } from 'preact';
 	
-export default class Button extends Component {
-
+export default class SettingsButton extends Component {
+	
 	// rendering a function when the button is clicked
 	render() {
 		let cFunction = this.props.clickFunction;
@@ -11,13 +11,14 @@ export default class Button extends Component {
 				console.log("passed something as 'clickFunction' that wasn't a function !");
 			}
 		}
-		
-		return (
+
+		return (	
 			<div>
 				<button onClick={cFunction}>
-					Display Weather
+					Gear
 				</button>
 			</div>
 		);
 	}
 }
+
