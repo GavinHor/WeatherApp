@@ -42,6 +42,7 @@ export default class Iphone extends Component {
 						<header class={style.header}>
 							<div class={style.city}>{this.state.locate}</div>
 							<span class={style.temperature}>{this.state.temp}</span>
+							<img class ={style.mainIcon} src={`https://openweathermap.org/img/wn/${this.state.icon}@2x.png`} alt=""></img>
 							<div class={style.conditions}>{this.state.cond}</div>
 							<table class={style.maxMinTemperature}>
 								<tr>
@@ -50,7 +51,7 @@ export default class Iphone extends Component {
 								</tr>
 							</table>
 							<hr class={style.hr}></hr>
-							<HourlyForcast hourly={this.state.hourly7DayForcast} current={this.state.temp}/>
+							<HourlyForcast hourly={this.state.hourly7DayForcast} iconForcast={this.state.icons3Hour5DayForcast}/>
 						</header> : null
 				}
 				{this.state.displayWeekly ? <WeeklyForcast daily={this.state.daily7DayForcast}/> : null}
@@ -66,7 +67,6 @@ export default class Iphone extends Component {
 	}
 
 	displaySettings = () => {
-		console.log(this.state.displaySettingsToggle)
 		if (this.state.displaySettingsToggle == true) {
 			this.setState({
 				displaySettingsToggle: false,
@@ -81,8 +81,8 @@ export default class Iphone extends Component {
 				displayHourly: false,
 				displayWeekly: false
 			});
-			console.log("displaying settings")
 		}
+		console.log("Settings displayed?: " + this.state.displaySettingsToggle)
 	}
 
 	handleChildClick = () => {
@@ -104,7 +104,6 @@ export default class Iphone extends Component {
 			error: function (req, err) { console.log('API call failed ' + err); }
 		})
 
-
 		// once the data grabbed, hide the button
 		this.setState({
 			display: false,
@@ -119,15 +118,37 @@ export default class Iphone extends Component {
 		var highestTemp_c = parsed_json['main']['temp_max'];
 		var lowestTemp_c = parsed_json['main']['temp_min'];
 		var conditions = parsed_json['weather']['0']['description'];
+		var iconCurrentWeather = parsed_json['weather']['0']['icon']
+		var longitude = parsed_json['coord']['lon']
+		var latitude = parsed_json['coord']['lat']
+
 		// set states for fields so they could be rendered later on
 		this.setState({
 			locate: location,
+			long: longitude,
+			lat: latitude,
 			temp: temp_c + "°",
 			cond: conditions,
 			highestTemp: 'H:' + highestTemp_c,
-			lowestTemp: 'L:' + lowestTemp_c
+			lowestTemp: 'L:' + lowestTemp_c,
+			icon: iconCurrentWeather
 		});
-		console.log(parsed_json)
+
+		$.ajax({
+			url: `https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.lat}&lon=${this.state.long}&appid=55c7ce0930b022b960dec0062ba360b6`,
+			dataType: "json",
+			success: this.parseResponseOpenWeatherForcast,
+			error: function (req, err) { console.log('API call failed ' + err); }
+		})
+	}
+
+	parseResponseOpenWeatherForcast = (parsed_json) => {
+		// set states for fields so they could be rendered later on
+		var icons = parsed_json['list']
+		this.setState({
+			icons3Hour5DayForcast: icons
+		});
+		console.log(this.state.icons3Hour5DayForcast);
 	}
 
 	//7 day forcast split into 2 categories
@@ -136,7 +157,7 @@ export default class Iphone extends Component {
 	parseResponseMeteoWeather = (parsed_json) => {
 		var dailyForcast = parsed_json['hourly']
 		var weeklyForcast = parsed_json['daily']
-
+	// set states for fields so they could be rendered later on
 		this.setState({
 			hourly7DayForcast: dailyForcast,
 			daily7DayForcast: weeklyForcast
