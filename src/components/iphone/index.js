@@ -61,9 +61,9 @@ export default class Iphone extends Component {
 				{this.state.displayWeekly ? <WeeklyForcast daily={this.state.Forcast} cf={this.state.settingsTrueFalse[0]}/> : null}
 
 				<footer class={style.footer}>
-					<div>
-						<button type="button" onclick={this.searchLocation}>Search</button>
-						<textarea id="Location"></textarea>
+					<div class={style.Search}>
+						<button type="button" class={style.textButton} onclick={this.searchLocation}>Search</button>
+						<textarea id="Location" class={style.textArea}></textarea>
 					</div>
 					<SettingsButton clickFunction={this.displaySettings} />
 				</footer>

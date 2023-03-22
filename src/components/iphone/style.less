@@ -85,7 +85,7 @@
 	position: fixed;
 	display: flex;
 	flex-direction: row;
-	width: 414px;
+	width: 100%;
 	bottom: 0px;
 	padding: 0.5em;
 	justify-content: space-around;
@@ -217,4 +217,27 @@
 	margin-bottom: 0.3em;
 	transition: all 0.5s;
 	font-size: 3em;
+  }
+
+  .Search{
+	display: flex;
+	flex-direction: column;
+	width: 15em;
+  }
+
+  .textButton{
+	border-top-right-radius: 0.3em;
+	border-top-left-radius: 0.3em;
+	border: 1px solid white;
+	background: inherit;
+	color: white;
+  }
+
+  .textArea{
+	border-bottom-right-radius: 0.3em;
+	border-bottom-left-radius: 0.3em;
+	border: 0px;
+	height: 2em;
+	resize: vertical;
+	max-height: 10em;
   }
