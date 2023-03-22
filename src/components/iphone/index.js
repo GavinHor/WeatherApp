@@ -41,7 +41,7 @@ export default class Iphone extends Component {
 		return (
 			<body class={style.container}>
 				{this.state.displaySettingsToggle ? <SettingsPage updateSettings={this.updateSettings}/>: null}
-				{this.state.displayError ? <header class={style.header}><div class={style.temperature}>Invalid input, please search for something else</div></header>: null}
+				{this.state.displayError ? <header class={style.error}>Invalid input, please search for something else</header>: null}
 				{this.state.displayHourly ?
 					<header class={style.header}>
 						<div class={style.city}>{this.state.locate}</div>
@@ -61,11 +61,23 @@ export default class Iphone extends Component {
 				{this.state.displayWeekly ? <WeeklyForcast daily={this.state.Forcast} cf={this.state.settingsTrueFalse[0]}/> : null}
 
 				<footer class={style.footer}>
+					<div>
+						<button type="button" onclick={this.searchLocation}>Search</button>
+						<textarea id="Location"></textarea>
+					</div>
 					<SettingsButton clickFunction={this.displaySettings} />
 				</footer>
 			</body>
 		);
 	}
+
+	searchLocation = () => {
+		this.setState({
+			searchedLocation: document.getElementById('Location').value
+		});
+		this.fetchWeatherData();
+	}
+
 
 	displaySettings = () => {
 		if (this.state.displayError == true)
