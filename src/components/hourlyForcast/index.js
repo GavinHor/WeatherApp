@@ -15,6 +15,12 @@ export default class HourlyForcast extends Component {
 		};
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (prevprops.hourly !== this.props.hourly)
+		{
+			console.log("test")
+		}
+	}
 	// rendering a function when the button is clicked
 	render() {
 		let hourly = this.props.hourly

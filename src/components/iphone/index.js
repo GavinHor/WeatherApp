@@ -25,8 +25,10 @@ export default class Iphone extends Component {
 			display: true,
 			displayHourly: false,
 			displayWeekly: false,
+			displayError: false,
 			displaySettingsToggle: false,
-			settingsTrueFalse: [false, false]
+			settingsTrueFalse: [false, false],
+			searchedLocation: "London"
 		});
 	}
 
@@ -38,33 +40,8 @@ export default class Iphone extends Component {
 		// display all weather data
 		return (
 			<body class={style.container}>
-				{this.state.displaySettingsToggle ?
-					<header class={style.header}>
-						<table class={style.settingsTable}>
-							<tr>
-								<td>
-									<p>Celcius/Farenheit</p>
-								</td>
-								<td>
-									<label class={style.switch}>
-										<input type="checkbox" onChange={this.changeCF}checked={this.state.settingsTrueFalse[0]}></input>
-										<span class={style.slider}></span>
-									</label>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<p>Light Mode/Dark Mode</p>
-								</td>
-								<td>
-									<label class={style.switch}>
-										<input id="lightDark" type="checkbox" onChange={this.changeLightDark} checked={this.state.settingsTrueFalse[1]}> </input>
-										<span class={style.slider}></span>
-									</label>
-								</td>
-							</tr>
-						</table>
-					</header> : null}
+				{this.state.displaySettingsToggle ? <SettingsPage updateSettings={this.updateSettings}/>: null}
+				{this.state.displayError ? <header class={style.header}><div class={style.temperature}>Invalid input, please search for something else</div></header>: null}
 				{this.state.displayHourly ?
 					<header class={style.header}>
 						<div class={style.city}>{this.state.locate}</div>
@@ -91,6 +68,10 @@ export default class Iphone extends Component {
 	}
 
 	displaySettings = () => {
+		if (this.state.displayError == true)
+		{
+			return
+		}
 		if (this.state.displaySettingsToggle == true) {
 			this.setState({
 				displaySettingsToggle: false,
@@ -110,11 +91,12 @@ export default class Iphone extends Component {
 	}
 
 	fetchWeatherData = () => {
+		let location = this.state.searchedLocation
 		$.ajax({
-			url: "http://api.weatherapi.com/v1/forecast.json?key=98d8a154a76746a5b7c120414232203&q=London&days=7&aqi=no&alerts=no",
+			url: `http://api.weatherapi.com/v1/forecast.json?key=98d8a154a76746a5b7c120414232203&q=${location}&days=7&aqi=no&alerts=no`,
 			dataType: "json",
 			success: this.parseResponseWeather,
-			error: function (req, err) { console.log('API call failed ' + err); }
+			error: this.showError
 		})
 	}
 
@@ -149,27 +131,22 @@ export default class Iphone extends Component {
 			Forcast: currentForcast,
 			displayHourly: true,
 			displayWeekly: true,
+			displayError: false,
 			display: false
 		});
-
 	}
 
-	changeCF = () => {
-		console.log("CF")
-		let trueFalse = this.state.settingsTrueFalse
-		trueFalse[0] = !trueFalse[0]
+	showError = () => {
+		console.log("Error, incorrect Values, Please try something else")
+		this.setState({
+			displayError: true
+		});
+	}
+
+	updateSettings = (trueFalse) => {
 		console.log(trueFalse)
 		this.setState({
 			settingsTrueFalse: trueFalse
-		})
-	}
-
-	changeLightDark = () => {
-		console.log("LD")
-		let trueFalse = this.state.settingsTrueFalse
-		trueFalse[1] = !trueFalse[1]
-		this.setState({
-			settingsTrueFalse: trueFalse
-		})
+		});
 	}
 }

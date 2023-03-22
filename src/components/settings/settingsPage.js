@@ -4,16 +4,13 @@ import style from '../iphone/style';
 
 export default class SettingsPage extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            lightDark: false
-        };
-    }
+    constructor() {
+		super();
 
-    getValue() {
-        return this.state.value;
-    }
+		this.state = {
+            trueFalseSettings: [false,false]
+		};
+	}
 
     // rendering a function when the button is clicked
     render() {
@@ -26,8 +23,8 @@ export default class SettingsPage extends Component {
                         </td>
                         <td>
                             <label class={style.switch}>
-                                <input type="checkbox" checked="true">TESTING123</input>
-                                <span class={style.slider}>TESTING123</span>
+                                <input type="checkbox" onclick={this.changeCelciusFarenheit} checked={this.state.trueFalseSettings[0]}></input>
+                                <span class={style.slider}></span>
                             </label>
                         </td>
                     </tr>
@@ -37,7 +34,7 @@ export default class SettingsPage extends Component {
                         </td>
                         <td>
                             <label class={style.switch}>
-                                <input type="checkbox"  id="lightDark" onChange={this.change}> </input>
+                                <input type="checkbox" id="lightDark" onclick={this.changeDarkLight} checked={this.state.trueFalseSettings[1]}>test </input>
                                 <span class={style.slider}></span>
                             </label>
                         </td>
@@ -47,5 +44,23 @@ export default class SettingsPage extends Component {
         );
     }
 
+    changeCelciusFarenheit = () => {
+        let trueFalse = this.state.trueFalseSettings
+        trueFalse[0] = !trueFalse[0]
+        this.setState({
+            trueFalseSettings: trueFalse
+        })
+        this.props.updateSettings(trueFalse)
+    }
+
+    changeDarkLight = () => {
+        let trueFalse = this.state.trueFalseSettings
+        trueFalse[1] = !trueFalse[1]
+        this.setState({
+            trueFalseSettings: trueFalse
+        })
+        this.props.updateSettings(trueFalse)
+    }
+    
 }
 
