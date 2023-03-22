@@ -25,39 +25,63 @@ export default class Iphone extends Component {
 			display: true,
 			displayHourly: false,
 			displayWeekly: false,
-			displaySettingsToggle: false
+			displaySettingsToggle: false,
+			settingsTrueFalse: [false, false]
 		});
 	}
 
+	componentDidMount = () => {
+		this.fetchWeatherData()
+	}
 	// the main render method for the iphone component
 	render() {
 		// display all weather data
-
-
 		return (
 			<body class={style.container}>
-				{this.state.displaySettingsToggle ? <SettingsPage onClick={this.handleChildClick}/>: null}
-				{
-					this.state.displayHourly ?
-						<header class={style.header}>
-							<div class={style.city}>{this.state.locate}</div>
-							<span class={style.temperature}>{this.state.temp}</span>
-							<img class ={style.mainIcon} src={`https://openweathermap.org/img/wn/${this.state.icon}@2x.png`} alt=""></img>
-							<div class={style.conditions}>{this.state.cond}</div>
-							<table class={style.maxMinTemperature}>
-								<tr>
-									<td> {this.state.highestTemp} </td>
-									<td> {this.state.lowestTemp} </td>
-								</tr>
-							</table>
-							<hr class={style.hr}></hr>
-							<HourlyForcast hourly={this.state.hourly7DayForcast} iconForcast={this.state.icons3Hour5DayForcast}/>
-						</header> : null
+				{this.state.displaySettingsToggle ?
+					<header class={style.header}>
+						<table class={style.settingsTable}>
+							<tr>
+								<td>
+									<p>Celcius/Farenheit</p>
+								</td>
+								<td>
+									<label class={style.switch}>
+										<input type="checkbox" onChange={this.changeCF}checked={this.state.settingsTrueFalse[0]}></input>
+										<span class={style.slider}></span>
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p>Light Mode/Dark Mode</p>
+								</td>
+								<td>
+									<label class={style.switch}>
+										<input id="lightDark" type="checkbox" onChange={this.changeLightDark} checked={this.state.settingsTrueFalse[1]}> </input>
+										<span class={style.slider}></span>
+									</label>
+								</td>
+							</tr>
+						</table>
+					</header> : null}
+				{this.state.displayHourly ?
+					<header class={style.header}>
+						<div class={style.city}>{this.state.locate}</div>
+						<span class={style.temperature}>{this.state.temp}</span>
+						<img class={style.mainIcon} src={this.state.icon} alt=""></img>
+						<div class={style.conditions}>{this.state.cond}</div>
+						<table class={style.maxMinTemperature}>
+							<tr>
+								<td> {this.state.highestTemp} </td>
+								<td> {this.state.lowestTemp} </td>
+							</tr>
+						</table>
+						<hr class={style.hr}></hr>
+						<HourlyForcast hourly={this.state.Forcast} cf={this.state.settingsTrueFalse[0]}/>
+					</header> : null
 				}
-				{this.state.displayWeekly ? <WeeklyForcast daily={this.state.daily7DayForcast}/> : null}
-				<div class={style_iphone.container}>
-					{this.state.display ? <Button class={style_iphone.button} clickFunction={this.fetchWeatherData} /> : null}
-				</div>
+				{this.state.displayWeekly ? <WeeklyForcast daily={this.state.Forcast} cf={this.state.settingsTrueFalse[0]}/> : null}
 
 				<footer class={style.footer}>
 					<SettingsButton clickFunction={this.displaySettings} />
@@ -85,83 +109,67 @@ export default class Iphone extends Component {
 		console.log("Settings displayed?: " + this.state.displaySettingsToggle)
 	}
 
-	handleChildClick = () => {
-		console.log('Child clicked!');
-	}
-
 	fetchWeatherData = () => {
 		$.ajax({
-			url: "http://api.openweathermap.org/data/2.5/weather?q=London&units=metric&APPID=55c7ce0930b022b960dec0062ba360b6",
+			url: "http://api.weatherapi.com/v1/forecast.json?key=98d8a154a76746a5b7c120414232203&q=London&days=7&aqi=no&alerts=no",
 			dataType: "json",
-			success: this.parseResponseOpenWeather,
+			success: this.parseResponseWeather,
 			error: function (req, err) { console.log('API call failed ' + err); }
 		})
-
-		$.ajax({
-			url: "https://api.open-meteo.com/v1/forecast?latitude=51.51&longitude=-0.13&hourly=temperature_2m&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timeformat=unixtime&timezone=auto",
-			dataType: "json",
-			success: this.parseResponseMeteoWeather,
-			error: function (req, err) { console.log('API call failed ' + err); }
-		})
-
-		// once the data grabbed, hide the button
-		this.setState({
-			display: false,
-			displayHourly: true,
-			displayWeekly: true
-		});
 	}
 
-	parseResponseOpenWeather = (parsed_json) => {
-		var location = parsed_json['name'];
-		var temp_c = parsed_json['main']['temp'];
-		var highestTemp_c = parsed_json['main']['temp_max'];
-		var lowestTemp_c = parsed_json['main']['temp_min'];
-		var conditions = parsed_json['weather']['0']['description'];
-		var iconCurrentWeather = parsed_json['weather']['0']['icon']
-		var longitude = parsed_json['coord']['lon']
-		var latitude = parsed_json['coord']['lat']
+	parseResponseWeather = (parsed_json) => {
+		console.log(parsed_json)
+		var location = parsed_json['location']['name']
+		var temp = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['temp_c']
+		var conditions = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['condition']['text']
+		var iconCondition = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['condition']['icon']
+		var currentForcast = parsed_json['forecast']['forecastday']
+
+		let cf = this.state.settingsTrueFalse[0]
+		if (cf)
+		{
+			var temp = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['temp_f']
+			var highestTemp = parsed_json['forecast']['forecastday']['0']['day']['maxtemp_f']
+			var lowestTemp = parsed_json['forecast']['forecastday']['0']['day']['mintemp_f']
+		} else {
+			var temp_c = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['temp_c']
+			var highestTemp = parsed_json['forecast']['forecastday']['0']['day']['maxtemp_c']
+			var lowestTemp = parsed_json['forecast']['forecastday']['0']['day']['mintemp_c']
+		}
 
 		// set states for fields so they could be rendered later on
 		this.setState({
 			locate: location,
-			long: longitude,
-			lat: latitude,
-			temp: temp_c + "°",
+			temp: temp + "°",
 			cond: conditions,
-			highestTemp: 'H:' + highestTemp_c,
-			lowestTemp: 'L:' + lowestTemp_c,
-			icon: iconCurrentWeather
+			highestTemp: 'H:' + highestTemp + "°",
+			lowestTemp: 'L:' + lowestTemp + "°",
+			icon: iconCondition,
+			Forcast: currentForcast,
+			displayHourly: true,
+			displayWeekly: true,
+			display: false
 		});
 
-		$.ajax({
-			url: `https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.lat}&lon=${this.state.long}&appid=55c7ce0930b022b960dec0062ba360b6`,
-			dataType: "json",
-			success: this.parseResponseOpenWeatherForcast,
-			error: function (req, err) { console.log('API call failed ' + err); }
+	}
+
+	changeCF = () => {
+		console.log("CF")
+		let trueFalse = this.state.settingsTrueFalse
+		trueFalse[0] = !trueFalse[0]
+		console.log(trueFalse)
+		this.setState({
+			settingsTrueFalse: trueFalse
 		})
 	}
 
-	parseResponseOpenWeatherForcast = (parsed_json) => {
-		// set states for fields so they could be rendered later on
-		var icons = parsed_json['list']
+	changeLightDark = () => {
+		console.log("LD")
+		let trueFalse = this.state.settingsTrueFalse
+		trueFalse[1] = !trueFalse[1]
 		this.setState({
-			icons3Hour5DayForcast: icons
-		});
-		console.log(this.state.icons3Hour5DayForcast);
-	}
-
-	//7 day forcast split into 2 categories
-	//1 for the overall day 
-	//1 for each hour of the day
-	parseResponseMeteoWeather = (parsed_json) => {
-		var dailyForcast = parsed_json['hourly']
-		var weeklyForcast = parsed_json['daily']
-	// set states for fields so they could be rendered later on
-		this.setState({
-			hourly7DayForcast: dailyForcast,
-			daily7DayForcast: weeklyForcast
+			settingsTrueFalse: trueFalse
 		})
-		console.log(parsed_json)
 	}
 }

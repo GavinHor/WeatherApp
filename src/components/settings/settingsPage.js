@@ -7,7 +7,7 @@ export default class SettingsPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: 69
+            lightDark: false
         };
     }
 
@@ -26,8 +26,8 @@ export default class SettingsPage extends Component {
                         </td>
                         <td>
                             <label class={style.switch}>
-                                <input type="checkbox"> </input>
-                                <span class={style.slider}></span>
+                                <input type="checkbox" checked="true">TESTING123</input>
+                                <span class={style.slider}>TESTING123</span>
                             </label>
                         </td>
                     </tr>
@@ -37,7 +37,7 @@ export default class SettingsPage extends Component {
                         </td>
                         <td>
                             <label class={style.switch}>
-                                <input type="checkbox"> </input>
+                                <input type="checkbox"  id="lightDark" onChange={this.change}> </input>
                                 <span class={style.slider}></span>
                             </label>
                         </td>
@@ -46,5 +46,6 @@ export default class SettingsPage extends Component {
             </header>
         );
     }
+
 }
 

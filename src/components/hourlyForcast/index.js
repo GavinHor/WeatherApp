@@ -8,72 +8,65 @@ export default class HourlyForcast extends Component {
 		super();
 
 		this.state = {
-			hourlyTimes: [],
-			hourlyTemps: [],
-			iconsArray: [],
-			iconsTimeArray: [],
+			hourlyTimes: new Array(24),
+			hourlyTemps: new Array(24),
+			hourlyIcons: new Array(24),
 			currentTime: new Date().getHours()
 		};
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		if (prevProps.hourly !== this.props.hourly) {
-			let icons3Hour5DayForcast = this.props.iconForcast;
-			console.log("list of temps")
-			console.log(icons3Hour5DayForcast)
-
-			let iconsTimeArray = new Array(40);
-			let iconsArray = new Array(40);
-
-			for (let i = 0; i < 40; i++) {
-				iconsArray[i] = icons3Hour5DayForcast[i]['weather'][0]['icon'];
-				iconsTimeArray[i] = icons3Hour5DayForcast[i]['dt'];
-			}
-
-			let hourlyForcast = this.props.hourly;
-			let times = hourlyForcast['time'];
-			let temps = hourlyForcast['temperature_2m'];
-			this.setState({
-				hourlyTimes: times,
-				hourlyTemps: temps,
-				iconsArray: iconsArray,
-				iconsTimeArray: iconsTimeArray,
-				//+1 since getHours gives us 
-				currentTime: new Date().getHours() + 1
-			});
-
-			console.log("hourly")
-			console.log(hourlyForcast)
-		}
-	}
-
 	// rendering a function when the button is clicked
 	render() {
-		let timeNow = this.state.currentTime;
-		let hourTimes = this.state.hourlyTimes;
-		let hourTemps = this.state.hourlyTemps;
-		let iconsArray = this.state.iconsArray;
-		let iconsTimeArray = this.state.iconsTimeArray;
+		let hourly = this.props.hourly
+		let tempType = ''
+		let hourTimes = this.state.hourlyTimes
+		let hourTemps = this.state.hourlyTemps
+		let hourIcons = this.state.hourlyIcons
+		let timeNow = this.state.currentTime
+		let j = 0
 
-		let hours = hourTimes.slice(timeNow, timeNow + 24).map((hour, i) =>
-			<td key={i} class={style.hourlyForcast_td}>{new Date(hour * 1000).getHours()}:00</td>
+		if (this.props.cf)
+		{
+			tempType = 'temp_f'
+		} else {
+			tempType = 'temp_c'
+		}
+		console.log(tempType)
+
+		while (j < 24) {
+			for (let k = timeNow; k < 24; k++) {
+				hourTimes[j] = new Date(hourly['0']['hour'][k]['time_epoch'] * 1000).getHours()
+				hourTemps[j] = hourly['0']['hour'][k][tempType]
+				hourIcons[j] = hourly['0']['hour'][k]['condition']['icon']
+				j += 1
+			}
+			for (let l = 0; l < timeNow; l++) {
+				hourTimes[j] = new Date(hourly['0']['hour'][l]['time_epoch'] * 1000).getHours()
+				hourTemps[j] = hourly['0']['hour'][l][tempType]
+				hourIcons[j] = hourly['0']['hour'][l]['condition']['icon']
+				j += 1
+			}
+			j += 5
+		}
+
+		console.log(this.state.hourlyTimes)
+
+		let hours = hourTimes.slice(1, 24).map((hour, i) =>
+			<td key={i} class={style.hourlyForcast_td}>{hour}:00</td>
 		);
 
-		let temps = hourTemps.slice(timeNow, timeNow + 24).map((temp, i) =>
+		let temps = hourTemps.map((temp, i) =>
 			<td key={i} class={style.hourlyForcast_td}>{temp}°</td>
 		);
 
-		let icons = hourTimes.slice(timeNow, timeNow + 24).map(hourTime => (
-			<td>
-				{iconsTimeArray.includes(hourTime) && (
-					<img src={`https://openweathermap.org/img/wn/${iconsArray[iconsTimeArray.indexOf(hourTime)]}@2x.png`} />
-				)}
-			</td>
-		))
+		let icons = hourIcons.map((icons, i) =>
+			<td class={style.hourlyForcast_td}><img key={i} src={icons}></img></td>
+		);
 		return (
 			<div class={style.hourlyForcastContainer}>
 				<table class={style.hourlyForcast} id="Hourly"></table>
 				<tr>
+					<td class={style.hourlyForcast_td}>Now</td>
 					{hours}
 				</tr>
 				<tr>

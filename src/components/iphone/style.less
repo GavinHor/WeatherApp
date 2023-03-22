@@ -7,10 +7,11 @@
 	overflow: auto;
 	color: #fff;
 	width: 414px; //414px
-	height: 100%; //736px
+	height: 100vh; //736px
 	text-align: center;
 	padding-top: 1em;
 	margin: 0 auto;
+	padding-bottom: 5em;
 	user-select: none;
 }
 
@@ -80,20 +81,18 @@
 }
 
 .footer {
+	background: inherit;
 	position: fixed;
 	width: 414px;
-	bottom: 0%;
-	padding: 1em;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
+	bottom: 0px;
+	padding: 0.5em;
 	justify-content: space-around;
 	border-top: 1px solid white;
 }
 
 .hourlyForcastContainer {
 	overflow-x: auto;
-	transition: 0.3s;
+	transition: 0.4s;
 	width: 20em;
 	margin: auto;
 }
@@ -122,8 +121,8 @@
 }
 
 .mainIcon {
-	width: 150px;
-	height: 150px;
+	width: 100px;
+	height: 100px;
 	margin: auto;
 }
 
@@ -193,4 +192,17 @@
 	transform: translateX(26px);
   }
 
-  
+  .settings{	
+	background: inherit;
+	border: 0px;
+  }
+
+  .settingButton{
+	width: 50px;
+	height: 50px;
+	transition: 0.4s;
+  }
+
+  .settingButton:hover {
+	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+  }
