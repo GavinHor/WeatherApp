@@ -271,7 +271,7 @@
 	margin: 0px;
 }
 
-.AdvancedInfo {
+.AdvancedInfoButton {
 	margin-top: 1.5em;
 	width: 3em;
 }
@@ -280,11 +280,22 @@
 	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
   }
 
-  .AdvancedInfoPage{
-	table-layout: fixed;
-  }
+.AdvancedInfoPage{
+	display:flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
 
-  .AdvancedInfoPage_break{
-	border-top: 1px solid white;
-	padding-top: 1em;
-  }
+.AdvancedInfoPageWidget{
+	background: rgba(255, 255, 255, 0.25);
+	border-radius: 0.5em;
+	margin: 1em;
+	padding: 1em;
+	flex-grow: 4;
+}
+
+.AdvancedInfoPageTitles{
+	font-size: large;
+	padding-bottom: 1em;
+}

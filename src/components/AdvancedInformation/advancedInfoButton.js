@@ -15,7 +15,7 @@ export default class AdvancedInfoButton extends Component {
 		return (	
 			<div>
 				<button onClick={cFunction} class={style.settings}>
-					<img src="../../assets/icons/advancedInfo.png" class={style.AdvancedInfo}></img>
+					<img src="../../assets/icons/advancedInfo.png" class={style.AdvancedInfoButton}></img>
 				</button>
 			</div>
 		);
