@@ -219,25 +219,39 @@
 	font-size: 3em;
   }
 
-  .Search{
+.searchContainer {
+	width: 100%;
+	max-width: 275px;
+	max-height: 50px;
+	background: rgba(255, 255, 255, 0.25);
 	display: flex;
-	flex-direction: column;
-	width: 15em;
-  }
+	flex-direction: row-reverse;
+	align-items: center;
+	border-radius: 60px;
+	padding: 10px 20px;
 
-  .textButton{
-	border-top-right-radius: 0.3em;
-	border-top-left-radius: 0.3em;
-	border: 1px solid white;
-	background: inherit;
-	color: white;
-  }
+ }
+ .textArea {
+	background: transparent;
+	flex: 1;
+	border: 0;
+	outline: none;
+	margin-top: 20px;
+	padding: 20px 20px;
+	font-size: 20px;
+	color: #cac7ff;
+ }
 
-  .textArea{
-	border-bottom-right-radius: 0.3em;
-	border-bottom-left-radius: 0.3em;
-	border: 0px;
-	height: 2em;
-	resize: vertical;
-	max-height: 10em;
-  }
+ .searchContainer button img {
+	width: 25px;
+
+}
+.searchContainer button {
+	border: 0;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	margin-right: -15px;
+	background: rgba(255, 255, 255, 0);
+	cursor: pointer;
+}
