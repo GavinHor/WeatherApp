@@ -7,12 +7,13 @@ export default class SettingsPage extends Component {
     constructor() {
 		super();
 
-		this.state = {
+		this.setState({
+            //array for all values so properties of html isn't excessively long
             trueFalseSettings: [false,false]
-		};
+		});
 	}
 
-    // rendering a function when the button is clicked
+    // rendering appropiate html for settingsPage
     render() {
         return (
             <header class={style.header}>
@@ -44,6 +45,7 @@ export default class SettingsPage extends Component {
         );
     }
 
+    //toggle function for if extract data is celcius or farenheit
     changeCelciusFarenheit = () => {
         let trueFalse = this.state.trueFalseSettings
         trueFalse[0] = !trueFalse[0]
@@ -53,6 +55,7 @@ export default class SettingsPage extends Component {
         this.props.updateSettings(trueFalse)
     }
 
+    //toggle function for if background is light mode or dark mode
     changeDarkLight = () => {
         let trueFalse = this.state.trueFalseSettings
         trueFalse[1] = !trueFalse[1]

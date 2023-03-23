@@ -5,12 +5,9 @@ export default class WeeklyForcast extends Component {
 
     constructor() {
         super();
-        this.state = {
-            dailyTempMax: new Array(7),
-            dailyTempMin: new Array(7),
-            dailyTime: new Array(7),
-            dailyIcons: new Array(7),
-            dailyDay: new Array(7),
+        this.setState({
+            nextWeek: new Array(7),
+            //Date().getDay() function only gives numbers 0-9, therefore array needed for translating between int to string.
             dailyDayTranslation: [
                 "Sun",
                 "Mon",
@@ -20,16 +17,16 @@ export default class WeeklyForcast extends Component {
                 "Fri",
                 "Sat"
             ]
-        };
+        });
     }
-
-    // rendering a function when the button is clicked
-    render() {
+	componentWillMount = () => {
         let daily = this.props.daily
-        let dailyMaxs = this.state.dailyTempMax
-        let dailyMins = this.state.dailyTempMin
-        let dailyIcons = this.state.dailyIcons
-        let dailyDay = this.state.dailyDay
+        let dailyMaxs = new Array(7)
+        let dailyMins = new Array(7)
+        let dailyIcons = new Array(7)
+        let dailyDay = new Array(7)
+
+        //Inserting appropiate extract data into variables
         if (this.props.cf){
             for (let j = 0; j < 7; j++) {
                 dailyMaxs[j] = daily[j]['day']['maxtemp_f']
@@ -46,6 +43,7 @@ export default class WeeklyForcast extends Component {
             }
         }
 
+        //Inserting variables into html
         let futureWeek = dailyIcons.map((icon, i) =>
             <tr class={style.weekly_tr}>
                 <td >{dailyDay[i]}</td>
@@ -54,9 +52,16 @@ export default class WeeklyForcast extends Component {
             </tr>
         );
 
+        this.setState({
+            nextWeek: futureWeek
+        });
+    }
+    // rendering a function when the button is clicked
+    render() {
+        //initialising variables
         return (
             <table class={style.details}>
-                {futureWeek}
+                {this.state.nextWeek}
             </table>
         );
     }

@@ -4,30 +4,24 @@ import style from '../iphone/style';
 
 export default class HourlyForcast extends Component {
 
+	//initialise states
 	constructor() {
 		super();
 
-		this.state = {
+		this.setState({
 			hourlyTimes: new Array(24),
 			hourlyTemps: new Array(24),
 			hourlyIcons: new Array(24),
 			currentTime: new Date().getHours()
-		};
+		});
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		if (prevprops.hourly !== this.props.hourly)
-		{
-			console.log("test")
-		}
-	}
-	// rendering a function when the button is clicked
-	render() {
+	componentWillMount = () =>{
 		let hourly = this.props.hourly
 		let tempType = ''
-		let hourTimes = this.state.hourlyTimes
-		let hourTemps = this.state.hourlyTemps
-		let hourIcons = this.state.hourlyIcons
+		let hourTimes = new Array(24)
+		let hourTemps = new Array(24)
+		let hourIcons = new Array(24)
 		let timeNow = this.state.currentTime
 		let j = 0
 
@@ -39,6 +33,7 @@ export default class HourlyForcast extends Component {
 		}
 		console.log(tempType)
 
+		//extract weather data and inserts them into appropiate values
 		while (j < 24) {
 			for (let k = timeNow; k < 24; k++) {
 				hourTimes[j] = new Date(hourly['0']['hour'][k]['time_epoch'] * 1000).getHours()
@@ -55,8 +50,7 @@ export default class HourlyForcast extends Component {
 			j += 5
 		}
 
-		console.log(this.state.hourlyTimes)
-
+		//Inserts values into appropiate html
 		let hours = hourTimes.slice(1, 24).map((hour, i) =>
 			<td key={i} class={style.hourlyForcast_td}>{hour}:00</td>
 		);
@@ -68,18 +62,29 @@ export default class HourlyForcast extends Component {
 		let icons = hourIcons.map((icons, i) =>
 			<td class={style.hourlyForcast_td}><img key={i} src={icons}></img></td>
 		);
+
+		this.setState({
+			hourlyTimes: hours,
+			hourlyTemps: temps,
+			hourlyIcons: icons
+		});
+	}
+	// render appropiate html
+	render() {
+
+		//html to be rendered
 		return (
 			<div class={style.hourlyForcastContainer}>
 				<table class={style.hourlyForcast} id="Hourly"></table>
 				<tr>
 					<td class={style.hourlyForcast_td}>Now</td>
-					{hours}
+					{this.state.hourlyTimes}
 				</tr>
 				<tr>
-					{icons}
+					{this.state.hourlyIcons}
 				</tr>
 				<tr>
-					{temps}
+					{this.state.hourlyTemps}
 				</tr>
 			</div>
 		);

@@ -4,7 +4,7 @@ import { h, render, Component } from 'preact';
 import style from './style';
 import style_iphone from '../button/style_iphone';
 // import jquery for API calls
-import $ from 'jquery';
+import $, { get } from 'jquery';
 // import the Button component
 import Button from '../button';
 import SettingsButton from '../settings/settingsButton';
@@ -22,7 +22,6 @@ export default class Iphone extends Component {
 		this.state.temp = "";
 		// button display state
 		this.setState({
-			display: true,
 			displayHourly: false,
 			displayWeekly: false,
 			displayError: false,
@@ -32,16 +31,18 @@ export default class Iphone extends Component {
 		});
 	}
 
+	//Gets data upon startup
 	componentDidMount = () => {
 		this.fetchWeatherData()
 	}
+	
 	// the main render method for the iphone component
 	render() {
 		// display all weather data
 		return (
 			<body class={style.container}>
-				{this.state.displaySettingsToggle ? <SettingsPage updateSettings={this.updateSettings}/>: null}
-				{this.state.displayError ? <header class={style.error}>Invalid input, please search for something else</header>: null}
+				{this.state.displaySettingsToggle ? <SettingsPage updateSettings={this.updateSettings} /> : null}
+				{this.state.displayError ? <header class={style.error}>Invalid input, please search for something else</header> : null}
 				{this.state.displayHourly ?
 					<header class={style.header}>
 						<div class={style.city}>{this.state.locate}</div>
@@ -55,10 +56,10 @@ export default class Iphone extends Component {
 							</tr>
 						</table>
 						<hr class={style.hr}></hr>
-						<HourlyForcast hourly={this.state.Forcast} cf={this.state.settingsTrueFalse[0]}/>
+						<HourlyForcast hourly={this.state.Forcast} cf={this.state.settingsTrueFalse[0]} />
 					</header> : null
 				}
-				{this.state.displayWeekly ? <WeeklyForcast daily={this.state.Forcast} cf={this.state.settingsTrueFalse[0]}/> : null}
+				{this.state.displayWeekly ? <WeeklyForcast daily={this.state.Forcast} cf={this.state.settingsTrueFalse[0]} /> : null}
 
 				<footer class={style.footer}>
 					<div class={style.Search}>
@@ -71,17 +72,21 @@ export default class Iphone extends Component {
 		);
 	}
 
+	//Get value from text area for location by: City, Country (will display closest city)
 	searchLocation = () => {
+		let locationSearched = document.getElementById('Location').value
+		if (locationSearched == "") {
+			return
+		}
 		this.setState({
 			searchedLocation: document.getElementById('Location').value
 		});
 		this.fetchWeatherData();
 	}
 
-
+	//Renders and derenders appropriate html/components to display settings
 	displaySettings = () => {
-		if (this.state.displayError == true)
-		{
+		if (this.state.displayError == true) {
 			return
 		}
 		if (this.state.displaySettingsToggle == true) {
@@ -102,16 +107,18 @@ export default class Iphone extends Component {
 		console.log("Settings displayed?: " + this.state.displaySettingsToggle)
 	}
 
+	//Calls API for weather data
 	fetchWeatherData = () => {
 		let location = this.state.searchedLocation
 		$.ajax({
-			url: `http://api.weatherapi.com/v1/forecast.json?key=98d8a154a76746a5b7c120414232203&q=${location}&days=7&aqi=no&alerts=no`,
+			url: `http://api.weatherapi.com/v1/forecast.json?key=98d8a154a76746a5b7c120414232203&q=${location}&days=7&aqi=no&alerts=yes`,
 			dataType: "json",
 			success: this.parseResponseWeather,
 			error: this.showError
 		})
 	}
 
+	//Extracts Json to be rendered
 	parseResponseWeather = (parsed_json) => {
 		console.log(parsed_json)
 		var location = parsed_json['location']['name']
@@ -119,10 +126,11 @@ export default class Iphone extends Component {
 		var conditions = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['condition']['text']
 		var iconCondition = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['condition']['icon']
 		var currentForcast = parsed_json['forecast']['forecastday']
+		var CurrentWarning = parsed_json['alerts']['alert']['0']
+
 
 		let cf = this.state.settingsTrueFalse[0]
-		if (cf)
-		{
+		if (cf) {
 			var temp = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['temp_f']
 			var highestTemp = parsed_json['forecast']['forecastday']['0']['day']['maxtemp_f']
 			var lowestTemp = parsed_json['forecast']['forecastday']['0']['day']['mintemp_f']
@@ -141,13 +149,18 @@ export default class Iphone extends Component {
 			lowestTemp: 'L:' + lowestTemp + "°",
 			icon: iconCondition,
 			Forcast: currentForcast,
-			displayHourly: true,
-			displayWeekly: true,
-			displayError: false,
-			display: false
 		});
+
+		if (!this.state.displaySettingsToggle) {
+			this.setState({
+				displayHourly: true,
+				displayWeekly: true,
+				displayError: false,
+			})
+		}
 	}
 
+	//display Error component
 	showError = () => {
 		console.log("Error, incorrect Values, Please try something else")
 		this.setState({
@@ -155,10 +168,13 @@ export default class Iphone extends Component {
 		});
 	}
 
+	//Grabs values settingsPage component and sets respective states to change specific values
+	//trueFalse[0] = celcius or farenheit
+	//trueFalse[1] = 
 	updateSettings = (trueFalse) => {
-		console.log(trueFalse)
 		this.setState({
 			settingsTrueFalse: trueFalse
 		});
+		document.getElementsByClassName('style.container').style.background = black;
 	}
 }
