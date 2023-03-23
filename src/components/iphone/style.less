@@ -7,13 +7,13 @@
 	overflow: auto;
 	color: #fff;
 	width: 414px; //414px
-	height: 100vh; //736px
+	height: 736px; //736px
 	text-align: center;
 	padding-top: 1em;
 	margin: 0 auto;
 	padding-bottom: 5em;
 	user-select: none;
-	transition: all 0.5s;
+	transition: all 0.4s;
 }
 
 .container::-webkit-scrollbar {
@@ -100,7 +100,7 @@
 }
 
 .hourlyForcastContainer:hover {
-	cursor:auto;
+	cursor: auto;
 	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
 }
 
@@ -128,17 +128,18 @@
 	margin: auto;
 }
 
-.icons{
+.icons {
 	max-height: auto;
 	width: 2.5em;
 }
 
 
-.settingsTable{
+.settingsTable {
 	width: 100%;
 	table-layout: fixed;
 	border-collapse: collapse;
 }
+
 /* The switch - the box around the slider */
 .switch {
 	position: relative;
@@ -161,13 +162,14 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: rgba(255, 255, 255, 0.25);;
+	background: rgba(255, 255, 255, 0.25);
+	;
 	border-radius: 0.5em;
 	-webkit-transition: .4s;
 	transition: .4s;
-  }
+}
 
-  .slider:before {
+.slider:before {
 	position: absolute;
 	content: "";
 	height: 26px;
@@ -178,38 +180,38 @@
 	-webkit-transition: .4s;
 	transition: .4s;
 	border-radius: 0.5em;
-  }
+}
 
-  input:checked + .slider {
+input:checked+.slider {
 	background-color: rgb(12, 206, 12);
-  }
-  
-  input:focus + .slider {
-	box-shadow: 0 0 1px #2561A0;
-  }
+}
 
-  input:checked + .slider:before {
+input:focus+.slider {
+	box-shadow: 0 0 1px #2561A0;
+}
+
+input:checked+.slider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
-  }
+}
 
-  .settings{	
+.settings {
 	background: inherit;
 	border: 0px;
-  }
+}
 
-  .settingButton{
+.settingButton {
 	width: 50px;
 	height: 50px;
 	transition: 0.4s;
-  }
+}
 
-  .settingButton:hover {
+.settingButton:hover {
 	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
-  }
+}
 
-  .error {
+.error {
 	background: rgba(255, 255, 255, 0.25);
 	border-radius: 0.2em;
 	margin-left: 0.3em;
@@ -217,12 +219,11 @@
 	margin-bottom: 0.3em;
 	transition: all 0.5s;
 	font-size: 3em;
-  }
+}
 
 .searchContainer {
-	width: 100%;
-	max-width: 275px;
-	max-height: 50px;
+	width: 275px;
+	max-height: 3em;
 	background: rgba(255, 255, 255, 0.25);
 	display: flex;
 	flex-direction: row-reverse;
@@ -230,8 +231,9 @@
 	border-radius: 60px;
 	padding: 10px 20px;
 
- }
- .textArea {
+}
+
+.textArea {
 	background: transparent;
 	flex: 1;
 	border: 0;
@@ -240,12 +242,14 @@
 	padding: 20px 20px;
 	font-size: 20px;
 	color: #cac7ff;
- }
+	resize: vertical;
+}
 
- .searchContainer button img {
+.searchContainer button img {
 	width: 25px;
 
 }
+
 .searchContainer button {
 	border: 0;
 	border-radius: 50%;
@@ -256,7 +260,7 @@
 	cursor: pointer;
 }
 
-.warning{
+.warning {
 	display: flex;
 	flex-direction: column;
 	background: rgba(255, 255, 255, 0.25);
@@ -267,27 +271,28 @@
 	padding: 1em;
 }
 
-.warningTitle{
+.warningTitle {
 	margin: 0px;
 }
 
 .AdvancedInfoButton {
 	margin-top: 1.5em;
 	width: 3em;
+	transition: all 0.4s;
 }
 
-.AdvancedInfo:hover {
+.AdvancedInfoButton:hover {
 	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
-  }
+}
 
-.AdvancedInfoPage{
-	display:flex;
+.AdvancedInfoPage {
+	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-around;
 }
 
-.AdvancedInfoPageWidget{
+.AdvancedInfoPageWidget {
 	background: rgba(255, 255, 255, 0.25);
 	border-radius: 0.5em;
 	margin: 1em;
@@ -295,7 +300,7 @@
 	flex-grow: 4;
 }
 
-.AdvancedInfoPageTitles{
+.AdvancedInfoPageTitles {
 	font-size: large;
 	padding-bottom: 1em;
 }

@@ -26,7 +26,6 @@ export default class AdvancedInfoPage extends Component {
 
     componentWillMount = () => {
         let currentWeather = this.props.currentInfo
-        console.log(currentWeather)
         this.setState({
 
             feelslike_c: currentWeather['feelslike_c'],
@@ -45,7 +44,6 @@ export default class AdvancedInfoPage extends Component {
             wind_kph: currentWeather['wind_kph'],
             wind_mph: currentWeather['wind_mph']
         })
-        console.log(this.state.wind_mph)
     }
 
     // rendering a function when the button is clicked

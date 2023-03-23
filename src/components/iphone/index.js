@@ -47,7 +47,7 @@ export default class Iphone extends Component {
 				{this.state.displayWarning ? <Warning warningInfo={this.state.warningInfo}/>: null}
 				{this.state.displaySettingsToggle ? <SettingsPage updateSettings={this.updateSettings} /> : null}
 				{this.state.displayAdvancedInformationToggle ? <AdvancedInfoPage currentInfo={this.state.advancedInfo}/>: null}
-				{this.state.displayError ? <header class={style.error}>Invalid input, please search for something else</header> : null}
+				{this.state.displayError ? <header class={style.error}>Invalid input</header> : null}
 				{this.state.displayHourly ?
 					<header class={style.header}>
 						<div class={style.city}>{this.state.locate}</div>
@@ -114,7 +114,6 @@ export default class Iphone extends Component {
 				displayWarning: false
 			});
 		}
-		console.log("Settings displayed?: " + this.state.displaySettingsToggle)
 	}
 
 	//Renders and derenders appropriate html/components to display settings
@@ -138,8 +137,6 @@ export default class Iphone extends Component {
 				displayWarning: false
 			});
 		}
-		console.log(this.state.displayHourly)
-		console.log("AdvancedInfo displayed?: " + this.state.displayAdvancedInformationToggle)
 	}
 
 	//Calls API for weather data
@@ -155,7 +152,6 @@ export default class Iphone extends Component {
 
 	//Extracts Json to be rendered
 	parseResponseWeather = (parsed_json) => {
-		console.log(parsed_json)
 		var location = parsed_json['location']['name']
 		var temp = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['temp_c']
 		var conditions = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['condition']['text']
@@ -209,7 +205,6 @@ export default class Iphone extends Component {
 
 	//display Error component
 	showError = () => {
-		console.log("Error, incorrect Values, Please try something else")
 		this.setState({
 			displayError: true
 		});
