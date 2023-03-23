@@ -13,6 +13,7 @@
 	margin: 0 auto;
 	padding-bottom: 5em;
 	user-select: none;
+	transition: all 0.5s;
 }
 
 .container::-webkit-scrollbar {
@@ -26,7 +27,6 @@
 	border-radius: 0.5em;
 	margin-left: 1em;
 	margin-right: 1em;
-	transition: all 0.5s;
 }
 
 .weekly_tr {
@@ -96,6 +96,7 @@
 	overflow-x: auto;
 	width: 20em;
 	margin: auto;
+	transition: all 0.5s;
 }
 
 .hourlyForcastContainer:hover {
@@ -254,3 +255,36 @@
 	background: rgba(255, 255, 255, 0);
 	cursor: pointer;
 }
+
+.warning{
+	display: flex;
+	flex-direction: column;
+	background: rgba(255, 255, 255, 0.25);
+	border-radius: 0.5em;
+	margin-left: 1em;
+	margin-right: 1em;
+	margin-bottom: 1em;
+	padding: 1em;
+}
+
+.warningTitle{
+	margin: 0px;
+}
+
+.AdvancedInfo {
+	margin-top: 1.5em;
+	width: 3em;
+}
+
+.AdvancedInfo:hover {
+	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+  }
+
+  .AdvancedInfoPage{
+	table-layout: fixed;
+  }
+
+  .AdvancedInfoPage_break{
+	border-top: 1px solid white;
+	padding-top: 1em;
+  }

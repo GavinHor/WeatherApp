@@ -6,12 +6,13 @@ import style_iphone from '../button/style_iphone';
 // import jquery for API calls
 import $, { get } from 'jquery';
 // import the Button component
-import Button from '../button';
 import SettingsButton from '../settings/settingsButton';
 import HourlyForcast from '../hourlyForcast';
 import WeeklyForcast from '../weeklyForcast';
 import SettingsPage from '../settings/settingsPage';
-
+import Warning from '../warning';
+import AdvancedInfoButton from '../AdvancedInformation/advancedInfoButton';
+import AdvancedInfoPage from '../AdvancedInformation/advancedInfoPage';
 export default class Iphone extends Component {
 	//var Iphone = React.createClass({
 
@@ -25,7 +26,9 @@ export default class Iphone extends Component {
 			displayHourly: false,
 			displayWeekly: false,
 			displayError: false,
+			displayWarning: false,
 			displaySettingsToggle: false,
+			displayAdvancedInformationToggle: false,
 			settingsTrueFalse: [false, false],
 			searchedLocation: "London"
 		});
@@ -40,8 +43,10 @@ export default class Iphone extends Component {
 	render() {
 		// display all weather data
 		return (
-			<body class={style.container}>
+			<body id = "container" class={style.container}>
+				{this.state.displayWarning ? <Warning warningInfo={this.state.warningInfo}/>: null}
 				{this.state.displaySettingsToggle ? <SettingsPage updateSettings={this.updateSettings} /> : null}
+				{this.state.displayAdvancedInformationToggle ? <AdvancedInfoPage currentInfo={this.state.advancedInfo}/>: null}
 				{this.state.displayError ? <header class={style.error}>Invalid input, please search for something else</header> : null}
 				{this.state.displayHourly ?
 					<header class={style.header}>
@@ -62,6 +67,7 @@ export default class Iphone extends Component {
 				{this.state.displayWeekly ? <WeeklyForcast daily={this.state.Forcast} cf={this.state.settingsTrueFalse[0]} /> : null}
 
 				<footer class={style.footer}>
+					<AdvancedInfoButton clickFunction={this.displayAdvancedInformation}/>
 					<div class={style.searchContainer}>
 						<button type="button" class={style.textButton} onclick={this.searchLocation}><img src="../../assets/icons/search.png"></img></button>
 						<textarea id="Location" class={style.textArea}></textarea>
@@ -92,19 +98,48 @@ export default class Iphone extends Component {
 		if (this.state.displaySettingsToggle == true) {
 			this.setState({
 				displaySettingsToggle: false,
+				displayAdvancedInformationToggle: false,
 				displayHourly: true,
-				displayWeekly: true
+				displayWeekly: true,
+				displayWarning: true
 			});
 			this.fetchWeatherData();
 
 		} else {
 			this.setState({
 				displaySettingsToggle: true,
+				displayAdvancedInformationToggle: false,
 				displayHourly: false,
-				displayWeekly: false
+				displayWeekly: false,
+				displayWarning: false
 			});
 		}
 		console.log("Settings displayed?: " + this.state.displaySettingsToggle)
+	}
+
+	//Renders and derenders appropriate html/components to display settings
+	displayAdvancedInformation = () => {
+		if (this.state.displayError == true) {
+			return
+		} else if (this.state.displayAdvancedInformationToggle) {
+			this.setState({
+				displayAdvancedInformationToggle: false,
+				displaySettingsToggle: false,
+				displayHourly: true,
+				displayWeekly: true,
+				displayWarning: true
+			});
+		} else {
+			this.setState({
+				displayAdvancedInformationToggle: true,
+				displaySettingsToggle: false,
+				displayHourly: false,
+				displayWeekly: false,
+				displayWarning: false
+			});
+		}
+		console.log(this.state.displayHourly)
+		console.log("AdvancedInfo displayed?: " + this.state.displayAdvancedInformationToggle)
 	}
 
 	//Calls API for weather data
@@ -126,7 +161,8 @@ export default class Iphone extends Component {
 		var conditions = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['condition']['text']
 		var iconCondition = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['condition']['icon']
 		var currentForcast = parsed_json['forecast']['forecastday']
-		var CurrentWarning = parsed_json['alerts']['alert']['0']
+		var currentWarning = parsed_json['alerts']['alert']['0']
+		var currentAdvancedInfo = parsed_json['current']
 
 
 		let cf = this.state.settingsTrueFalse[0]
@@ -135,7 +171,7 @@ export default class Iphone extends Component {
 			var highestTemp = parsed_json['forecast']['forecastday']['0']['day']['maxtemp_f']
 			var lowestTemp = parsed_json['forecast']['forecastday']['0']['day']['mintemp_f']
 		} else {
-			var temp_c = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['temp_c']
+			var temp = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['temp_c']
 			var highestTemp = parsed_json['forecast']['forecastday']['0']['day']['maxtemp_c']
 			var lowestTemp = parsed_json['forecast']['forecastday']['0']['day']['mintemp_c']
 		}
@@ -149,12 +185,23 @@ export default class Iphone extends Component {
 			lowestTemp: 'L:' + lowestTemp + "°",
 			icon: iconCondition,
 			Forcast: currentForcast,
+			warningInfo: currentWarning,
+			advancedInfo: currentAdvancedInfo
 		});
 
 		if (!this.state.displaySettingsToggle) {
 			this.setState({
 				displayHourly: true,
 				displayWeekly: true,
+				displayWarning: true,
+				displayError: false,
+			})
+		}else if (!this.state.displayAdvancedInformationToggle)
+		{
+			this.setState({
+				displayHourly: true,
+				displayWeekly: true,
+				displayWarning: true,
 				displayError: false,
 			})
 		}
@@ -175,6 +222,11 @@ export default class Iphone extends Component {
 		this.setState({
 			settingsTrueFalse: trueFalse
 		});
-		document.getElementsByClassName('style.container').style.background = black;
+		if (this.state.settingsTrueFalse[1])
+		{
+			document.getElementById('container').style.background = "black";
+		}else{
+			document.getElementById('container').style.background = "#2561A0";
+		}
 	}
 }

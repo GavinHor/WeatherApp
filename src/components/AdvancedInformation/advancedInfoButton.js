@@ -1,7 +1,7 @@
 // import preact
 import { h, render, Component } from 'preact';
 import style from '../iphone/style';
-export default class SettingsButton extends Component {
+export default class AdvancedInfoButton extends Component {
 	
 	// rendering a function when the button is clicked
 	render() {
@@ -15,7 +15,7 @@ export default class SettingsButton extends Component {
 		return (	
 			<div>
 				<button onClick={cFunction} class={style.settings}>
-					<img src="../../assets/icons/gear.png" class={style.settingButton}></img>
+					<img src="../../assets/icons/advancedInfo.png" class={style.AdvancedInfo}></img>
 				</button>
 			</div>
 		);

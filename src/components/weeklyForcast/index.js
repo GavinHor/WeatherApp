@@ -43,6 +43,8 @@ export default class WeeklyForcast extends Component {
             }
         }
 
+
+        dailyDay[0] = "Today";
         //Inserting variables into html
         let futureWeek = dailyIcons.map((icon, i) =>
             <tr class={style.weekly_tr}>

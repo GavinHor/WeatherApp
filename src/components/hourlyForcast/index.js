@@ -19,9 +19,9 @@ export default class HourlyForcast extends Component {
 	componentWillMount = () =>{
 		let hourly = this.props.hourly
 		let tempType = ''
-		let hourTimes = new Array(24)
-		let hourTemps = new Array(24)
-		let hourIcons = new Array(24)
+		let hourTimes = this.state.hourlyTimes
+		let hourTemps = this.state.hourlyTemps
+		let hourIcons = this.state.hourlyIcons
 		let timeNow = this.state.currentTime
 		let j = 0
 
@@ -31,7 +31,6 @@ export default class HourlyForcast extends Component {
 		} else {
 			tempType = 'temp_c'
 		}
-		console.log(tempType)
 
 		//extract weather data and inserts them into appropiate values
 		while (j < 24) {
