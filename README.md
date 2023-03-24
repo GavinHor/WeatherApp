@@ -2,8 +2,7 @@
 
 ## Set-Up Guide
 - [Installation](#installation)
-- [Development Workflow](#development-workflow)
-- [Quick Boilerplate Overview](#Main_Features)
+- [Main Features](#Main_Features)
 
 **0. Before doing any of this, if you're using your own laptop/desktop, make sure you've got the latest versions of node and npm installed (npm v: 4.0.5 & node v: 7.4.0) :**
 
@@ -30,6 +29,8 @@ npm run build
 ```sh
 npm start
 ```
+
+6. Copy and Paste the URL link that "npm start" provides into a browser
 
 ## Main_Features
 - Search bar is capable of finding a location by typing the City, Country, Postcode, or Longitude and Latitude
