@@ -3,6 +3,7 @@ import { h, render, Component } from 'preact';
 import style from '../iphone/style';
 export default class AdvancedInfoPage extends Component {
 
+    //declaring states
     constructor() {
         super();
         this.setState({
@@ -24,6 +25,7 @@ export default class AdvancedInfoPage extends Component {
         });
     }
 
+    //initialising variables needed for html
     componentWillMount = () => {
         let currentWeather = this.props.currentInfo
         this.setState({
@@ -46,7 +48,7 @@ export default class AdvancedInfoPage extends Component {
         })
     }
 
-    // rendering a function when the button is clicked
+    // renders the HTML when the AdvancedInfoPage is being displayed
     render() {
 
         return (

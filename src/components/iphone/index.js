@@ -30,7 +30,8 @@ export default class Iphone extends Component {
 			displaySettingsToggle: false,
 			displayAdvancedInformationToggle: false,
 			settingsTrueFalse: [false, false],
-			searchedLocation: "London"
+			searchedLocation: "London",
+			forcast: ""
 		});
 	}
 
@@ -61,10 +62,10 @@ export default class Iphone extends Component {
 							</tr>
 						</table>
 						<hr class={style.hr}></hr>
-						<HourlyForcast hourly={this.state.Forcast} cf={this.state.settingsTrueFalse[0]} />
+						<HourlyForcast hourly={this.state.forcast} cf={this.state.settingsTrueFalse[0]} />
 					</header> : null
 				}
-				{this.state.displayWeekly ? <WeeklyForcast daily={this.state.Forcast} cf={this.state.settingsTrueFalse[0]} /> : null}
+				{this.state.displayWeekly ? <WeeklyForcast daily={this.state.forcast} cf={this.state.settingsTrueFalse[0]} /> : null}
 
 				<footer class={style.footer}>
 					<AdvancedInfoButton clickFunction={this.displayAdvancedInformation}/>
@@ -99,9 +100,6 @@ export default class Iphone extends Component {
 			this.setState({
 				displaySettingsToggle: false,
 				displayAdvancedInformationToggle: false,
-				displayHourly: true,
-				displayWeekly: true,
-				displayWarning: true
 			});
 			this.fetchWeatherData();
 
@@ -124,10 +122,8 @@ export default class Iphone extends Component {
 			this.setState({
 				displayAdvancedInformationToggle: false,
 				displaySettingsToggle: false,
-				displayHourly: true,
-				displayWeekly: true,
-				displayWarning: true
 			});
+			this.fetchWeatherData();
 		} else {
 			this.setState({
 				displayAdvancedInformationToggle: true,
@@ -150,7 +146,8 @@ export default class Iphone extends Component {
 		})
 	}
 
-	//Extracts Json to be rendered
+
+	//Extracts Json to set values
 	parseResponseWeather = (parsed_json) => {
 		var location = parsed_json['location']['name']
 		var temp = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['temp_c']
@@ -160,7 +157,7 @@ export default class Iphone extends Component {
 		var currentWarning = parsed_json['alerts']['alert']['0']
 		var currentAdvancedInfo = parsed_json['current']
 
-
+		//set values based on if user wants Celcius or farenheit 
 		let cf = this.state.settingsTrueFalse[0]
 		if (cf) {
 			var temp = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['temp_f']
@@ -171,7 +168,7 @@ export default class Iphone extends Component {
 			var highestTemp = parsed_json['forecast']['forecastday']['0']['day']['maxtemp_c']
 			var lowestTemp = parsed_json['forecast']['forecastday']['0']['day']['mintemp_c']
 		}
-
+		
 		// set states for fields so they could be rendered later on
 		this.setState({
 			locate: location,
@@ -180,26 +177,20 @@ export default class Iphone extends Component {
 			highestTemp: 'H:' + highestTemp + "°",
 			lowestTemp: 'L:' + lowestTemp + "°",
 			icon: iconCondition,
-			Forcast: currentForcast,
+			forcast: currentForcast,
 			warningInfo: currentWarning,
 			advancedInfo: currentAdvancedInfo
 		});
 
-		if (!this.state.displaySettingsToggle) {
+		console.log(this.state.forcast)
+		//rerender main part if neither settings page or advanced info page is showing
+		if (!this.state.displaySettingsToggle && !this.state.displayAdvancedInformationToggle) {
 			this.setState({
 				displayHourly: true,
 				displayWeekly: true,
 				displayWarning: true,
 				displayError: false,
-			})
-		}else if (!this.state.displayAdvancedInformationToggle)
-		{
-			this.setState({
-				displayHourly: true,
-				displayWeekly: true,
-				displayWarning: true,
-				displayError: false,
-			})
+			});
 		}
 	}
 
@@ -212,7 +203,7 @@ export default class Iphone extends Component {
 
 	//Grabs values settingsPage component and sets respective states to change specific values
 	//trueFalse[0] = celcius or farenheit
-	//trueFalse[1] = 
+	//trueFalse[1] = light or dark mode
 	updateSettings = (trueFalse) => {
 		this.setState({
 			settingsTrueFalse: trueFalse

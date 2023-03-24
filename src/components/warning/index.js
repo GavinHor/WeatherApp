@@ -3,7 +3,7 @@ import { h, render, Component } from 'preact';
 import style from '../iphone/style';
 export default class Warning extends Component {
 
-    // rendering a function when the button is clicked
+    // rendering html only if there is a warning for the specified location that the user has inputted
     render() {
         let info = this.props.warningInfo
         if (info == null) {
@@ -12,7 +12,6 @@ export default class Warning extends Component {
         let event = info['event']
         let desc = info['desc']
 
-        //let severity = info['severity']
         return (
             <header class={style.warning}>
                     <h1 class={style.warningTitle}>{event} Warning: </h1>

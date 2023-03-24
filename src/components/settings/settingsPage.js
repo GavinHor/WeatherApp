@@ -55,7 +55,7 @@ export default class SettingsPage extends Component {
         this.props.updateSettings(trueFalse)
     }
 
-    //toggle function for if background is light mode or dark mode
+    //toggle function for if application should be in is light mode or dark mode
     changeDarkLight = () => {
         let trueFalse = this.state.trueFalseSettings
         trueFalse[1] = !trueFalse[1]

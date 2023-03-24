@@ -4,7 +4,7 @@ import style from '../iphone/style';
 
 export default class HourlyForcast extends Component {
 
-	//initialise states
+	//declaring states
 	constructor() {
 		super();
 
@@ -14,6 +14,21 @@ export default class HourlyForcast extends Component {
 			hourlyIcons: new Array(24),
 			currentTime: new Date().getHours()
 		});
+	}
+
+	//checks to see if max,min, and average temp of the previous are the same, if not then update 
+	//should be statistically impossible for that to happen
+	componentDidUpdate = (prevProps, prevStates) => {
+        let currentCheck = this.props.hourly['0']['day']['mintemp_f']
+        let currentCheck2 = this.props.hourly['0']['day']['maxtemp_f']
+		let currentCheck3 = this.props.hourly['0']['day']['avgtemp_f']
+        let previousCheck = prevProps.hourly['0']['day']['mintemp_f']
+        let previousCheck2 = prevProps.hourly['0']['day']['maxtemp_f']
+		let previousCheck3 = prevProps.hourly['0']['day']['avgtemp_f']
+        if (currentCheck !== previousCheck && currentCheck2!==previousCheck2 && currentCheck3 !== previousCheck3)
+        {
+            this.componentWillMount()
+        }
 	}
 
 	componentWillMount = () =>{
@@ -70,7 +85,6 @@ export default class HourlyForcast extends Component {
 	}
 	// render appropiate html
 	render() {
-
 		//html to be rendered
 		return (
 			<div class={style.hourlyForcastContainer}>

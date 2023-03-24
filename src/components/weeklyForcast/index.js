@@ -19,7 +19,25 @@ export default class WeeklyForcast extends Component {
             ]
         });
     }
+
+	//checks to see if max,min, and average temp of the previous are the same, if not then update 
+	//should be statistically impossible for that to happen
+    componentDidUpdate = (prevProps, prevStates) => {
+        let currentCheck = this.props.daily['0']['day']['mintemp_f']
+        let currentCheck2 = this.props.daily['0']['day']['maxtemp_f']
+        let currentCheck3 = this.props.daily['0']['day']['avgtemp_f']
+        let previousCheck = prevProps.daily['0']['day']['mintemp_f']
+        let previousCheck2 = prevProps.daily['0']['day']['maxtemp_f']
+        let previousCheck3 = prevProps.daily['0']['day']['avgtemp_f']
+        if (currentCheck !== previousCheck && currentCheck2!==previousCheck2 && currentCheck3 !== previousCheck3)
+        {
+            this.componentWillMount()
+        }
+    }
+
+    //what to render once mounted/remounted
 	componentWillMount = () => {
+        //declaring variables
         let daily = this.props.daily
         let dailyMaxs = new Array(7)
         let dailyMins = new Array(7)

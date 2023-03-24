@@ -1,5 +1,5 @@
 @import '~style/helpers';
-
+//for whole body
 .container {
 	display: flex;
 	flex-direction: column;
@@ -7,7 +7,7 @@
 	overflow: auto;
 	color: #fff;
 	width: 414px; //414px
-	height: 736px; //736px
+	height: 100vh; //736px
 	text-align: center;
 	padding-top: 1em;
 	margin: 0 auto;
@@ -20,6 +20,7 @@
 	display: none;
 }
 
+//for main section of the weather where the current weather right now is shown
 .header {
 	display: flex;
 	flex-direction: column;
@@ -29,16 +30,51 @@
 	margin-right: 1em;
 }
 
-.weekly_tr {
-	border-bottom: 1px solid white;
-	height: 2em;
+.hourlyForcastContainer {
+	overflow-x: auto;
+	width: 20em;
+	margin: auto;
+	transition: all 0.5s;
 }
 
+//apply shadow to indicate more clearly that its usable
+.hourlyForcastContainer:hover {
+	cursor: auto;
+	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+}
+
+//doesn't show sideways scroll bar
+.hourlyForcastContainer::-webkit-scrollbar {
+	display: none;
+}
+
+.hourlyForcast {
+	border-collapse: collapse;
+}
+
+.hourlyForcast_td {
+	padding: 0.25em 1em 0.25em 1em;
+	text-align: center;
+}
+
+.hourlyForcastIcons {
+	width: 50px;
+	height: 50px;
+}
+
+// between hourlyForcast component and the rest of the header
 .hr {
 	border: 0.5px solid white;
 	width: 20em;
 }
 
+//for tr elements in the weekly section
+.weekly_tr {
+	border-bottom: 1px solid white;
+	height: 2em;
+}
+
+//for weeklyforcast
 .details {
 	border-collapse: collapse;
 	width: 20em;
@@ -70,16 +106,7 @@
 	margin: auto;
 }
 
-.filled:after {
-	content: "°";
-	margin: 0 0 0 0rem;
-	font-size: 0.5em;
-	font-weight: 100;
-	display: inline-block;
-	padding-top: 10px;
-	vertical-align: top;
-}
-
+//css for buttons at the bottom
 .footer {
 	background: inherit;
 	position: fixed;
@@ -90,36 +117,6 @@
 	padding: 0.5em;
 	justify-content: space-around;
 	border-top: 1px solid white;
-}
-
-.hourlyForcastContainer {
-	overflow-x: auto;
-	width: 20em;
-	margin: auto;
-	transition: all 0.5s;
-}
-
-.hourlyForcastContainer:hover {
-	cursor: auto;
-	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
-}
-
-.hourlyForcastContainer::-webkit-scrollbar {
-	display: none;
-}
-
-.hourlyForcast {
-	border-collapse: collapse;
-}
-
-.hourlyForcast_td {
-	padding: 0.25em 1em 0.25em 1em;
-	text-align: center;
-}
-
-.hourlyForcastIcons {
-	width: 50px;
-	height: 50px;
 }
 
 .mainIcon {
@@ -133,7 +130,7 @@
 	width: 2.5em;
 }
 
-
+//css for the body of the settingsPage
 .settingsTable {
 	width: 100%;
 	table-layout: fixed;
@@ -155,6 +152,7 @@
 	height: 0;
 }
 
+//The box on the toggle switches
 .slider {
 	position: absolute;
 	cursor: pointer;
@@ -169,6 +167,7 @@
 	transition: .4s;
 }
 
+//Box before inputbox is checked
 .slider:before {
 	position: absolute;
 	content: "";
@@ -182,14 +181,12 @@
 	border-radius: 0.5em;
 }
 
+//body of toggleswitch after inputbox is checked
 input:checked+.slider {
 	background-color: rgb(12, 206, 12);
 }
 
-input:focus+.slider {
-	box-shadow: 0 0 1px #2561A0;
-}
-
+//translation of slider box
 input:checked+.slider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
@@ -211,6 +208,7 @@ input:checked+.slider:before {
 	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
 }
 
+//for error input message
 .error {
 	background: rgba(255, 255, 255, 0.25);
 	border-radius: 0.2em;
@@ -221,6 +219,7 @@ input:checked+.slider:before {
 	font-size: 3em;
 }
 
+//container of both text area and button for the search bar
 .searchContainer {
 	width: 275px;
 	max-height: 3em;
@@ -260,6 +259,7 @@ input:checked+.slider:before {
 	cursor: pointer;
 }
 
+//for warning component
 .warning {
 	display: flex;
 	flex-direction: column;
@@ -271,6 +271,7 @@ input:checked+.slider:before {
 	padding: 1em;
 }
 
+// for header of warning component
 .warningTitle {
 	margin: 0px;
 }
@@ -292,6 +293,7 @@ input:checked+.slider:before {
 	justify-content: space-around;
 }
 
+//used to create boxes with dynamic size to fit the screen better
 .AdvancedInfoPageWidget {
 	background: rgba(255, 255, 255, 0.25);
 	border-radius: 0.5em;
@@ -300,6 +302,7 @@ input:checked+.slider:before {
 	flex-grow: 4;
 }
 
+//used for titles that need more room
 .AdvancedInfoPageTitles {
 	font-size: large;
 	padding-bottom: 1em;
