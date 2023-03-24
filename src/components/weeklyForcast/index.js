@@ -76,9 +76,9 @@ export default class WeeklyForcast extends Component {
             nextWeek: futureWeek
         });
     }
-    // rendering a function when the button is clicked
+    // Rendering a function when the button is clicked
     render() {
-        //initialising variables
+        //Initialising variables
         return (
             <table class={style.details}>
                 {this.state.nextWeek}

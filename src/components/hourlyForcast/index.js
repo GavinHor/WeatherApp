@@ -4,7 +4,7 @@ import style from '../iphone/style';
 
 export default class HourlyForcast extends Component {
 
-	//declaring states
+	//Declaring states
 	constructor() {
 		super();
 
@@ -16,8 +16,8 @@ export default class HourlyForcast extends Component {
 		});
 	}
 
-	//checks to see if max,min, and average temp of the previous are the same, if not then update 
-	//should be statistically impossible for that to happen
+	//Checks to see if max,min, and average temp of the previous are the same, if not then update 
+	//Should be statistically impossible for that to happen
 	componentDidUpdate = (prevProps, prevStates) => {
         let currentCheck = this.props.hourly['0']['day']['mintemp_f']
         let currentCheck2 = this.props.hourly['0']['day']['maxtemp_f']
@@ -32,6 +32,7 @@ export default class HourlyForcast extends Component {
 	}
 
 	componentWillMount = () =>{
+		//Initialising variables
 		let hourly = this.props.hourly
 		let tempType = ''
 		let hourTimes = this.state.hourlyTimes
@@ -47,7 +48,7 @@ export default class HourlyForcast extends Component {
 			tempType = 'temp_c'
 		}
 
-		//extract weather data and inserts them into appropiate values
+		//Extract weather data and inserts them into appropiate values
 		while (j < 24) {
 			for (let k = timeNow; k < 24; k++) {
 				hourTimes[j] = new Date(hourly['0']['hour'][k]['time_epoch'] * 1000).getHours()
@@ -83,9 +84,9 @@ export default class HourlyForcast extends Component {
 			hourlyIcons: icons
 		});
 	}
-	// render appropiate html
+	// Render appropiate html
 	render() {
-		//html to be rendered
+		//HTML to be rendered
 		return (
 			<div class={style.hourlyForcastContainer}>
 				<table class={style.hourlyForcast} id="Hourly"></table>

@@ -16,12 +16,12 @@ import AdvancedInfoPage from '../AdvancedInformation/advancedInfoPage';
 export default class Iphone extends Component {
 	//var Iphone = React.createClass({
 
-	// a constructor with initial set states
+	// A constructor with initial set states
 	constructor(props) {
 		super(props);
-		// temperature state
+		// Temperature state declared
 		this.state.temp = "";
-		// button display state
+		//Display state initialised
 		this.setState({
 			displayHourly: false,
 			displayWeekly: false,
@@ -35,7 +35,7 @@ export default class Iphone extends Component {
 		});
 	}
 
-	//Gets data upon startup
+	//Gets data upon first lifecyle render
 	componentDidMount = () => {
 		this.fetchWeatherData()
 	}
@@ -157,7 +157,7 @@ export default class Iphone extends Component {
 		var currentWarning = parsed_json['alerts']['alert']['0']
 		var currentAdvancedInfo = parsed_json['current']
 
-		//set values based on if user wants Celcius or farenheit 
+		//Set values based on if user wants Celcius or farenheit 
 		let cf = this.state.settingsTrueFalse[0]
 		if (cf) {
 			var temp = parsed_json['forecast']['forecastday']['0']['hour'][new Date().getHours()]['temp_f']
@@ -169,7 +169,7 @@ export default class Iphone extends Component {
 			var lowestTemp = parsed_json['forecast']['forecastday']['0']['day']['mintemp_c']
 		}
 		
-		// set states for fields so they could be rendered later on
+		//Set states for fields so they could be rendered later on
 		this.setState({
 			locate: location,
 			temp: temp + "°",
@@ -182,8 +182,7 @@ export default class Iphone extends Component {
 			advancedInfo: currentAdvancedInfo
 		});
 
-		console.log(this.state.forcast)
-		//rerender main part if neither settings page or advanced info page is showing
+		//Rerender main part if neither settings page or advanced info page is showing
 		if (!this.state.displaySettingsToggle && !this.state.displayAdvancedInformationToggle) {
 			this.setState({
 				displayHourly: true,
@@ -194,7 +193,7 @@ export default class Iphone extends Component {
 		}
 	}
 
-	//display Error component
+	//Display Error component
 	showError = () => {
 		this.setState({
 			displayError: true

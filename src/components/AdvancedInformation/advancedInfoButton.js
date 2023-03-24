@@ -3,7 +3,7 @@ import { h, render, Component } from 'preact';
 import style from '../iphone/style';
 export default class AdvancedInfoButton extends Component {
 	
-	// rendering a function when the button is clicked
+	// Rendering a function when the button is clicked
 	render() {
 		let cFunction = this.props.clickFunction;
 		if(typeof cFunction !== 'function'){

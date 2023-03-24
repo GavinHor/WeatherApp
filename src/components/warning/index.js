@@ -3,7 +3,7 @@ import { h, render, Component } from 'preact';
 import style from '../iphone/style';
 export default class Warning extends Component {
 
-    // rendering html only if there is a warning for the specified location that the user has inputted
+    //Rendering html only if there is a warning for the specified location that the user has inputted
     render() {
         let info = this.props.warningInfo
         if (info == null) {

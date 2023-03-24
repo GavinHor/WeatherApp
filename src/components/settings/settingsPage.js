@@ -8,7 +8,7 @@ export default class SettingsPage extends Component {
 		super();
 
 		this.setState({
-            //array for all values so properties of html isn't excessively long
+            //array for all values so properties of html in parent class isn't excessively long
             trueFalseSettings: [false,false]
 		});
 	}
