@@ -25,7 +25,7 @@ npm install
 npm run build
 ```
 
-5. Start local production server with [serve](https://github.com/zeit/serve):
+5. Start local production server with:
 ```sh
 npm start
 ```
