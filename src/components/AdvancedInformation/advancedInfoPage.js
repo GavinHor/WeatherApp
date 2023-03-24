@@ -32,16 +32,16 @@ export default class AdvancedInfoPage extends Component {
 
             feelslike_c: currentWeather['feelslike_c'],
             feelslike_f: currentWeather['feelslike_f'],
-            gust_kph: currentWeather['gust_kph'],
+            gust_kph: currentWeather['gust_kph'], //Instantanous wind speeds
             gust_mph: currentWeather['gust_mph'],
             humidity: currentWeather['humidity'],
-            precip_in: currentWeather['precip_in'],
-            precip_mm: currentWeather['precip_mm'],
-            pressure_in: currentWeather['pressure_in'],
+            precip_in: currentWeather['precip_in'], //Depth of rain that would be recieved in 1m^2
+            precip_mm: currentWeather['precip_mm'], //1mm = 1 liter of rain per 1m^2
+            pressure_in: currentWeather['pressure_in'], //Inches of mercury
             pressure_mb: currentWeather['pressure_mb'],
             vis_km: currentWeather['vis_km'],
             vis_miles: currentWeather['vis_miles'],
-            wind_degree: currentWeather['wind_degree'],
+            wind_degree: currentWeather['wind_degree'], //constant wind speeds
             wind_dir: currentWeather['wind_dir'],
             wind_kph: currentWeather['wind_kph'],
             wind_mph: currentWeather['wind_mph']
